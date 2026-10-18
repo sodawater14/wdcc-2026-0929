@@ -32,7 +32,7 @@ for(const id of [1,6,10,15]){
  assert.equal(await page.locator('#personal-summary .personal-section').count(),4);
  assert((await page.locator('#transcript').textContent()).length>800);
  await play();
- assert((await page.evaluate(()=>testAudio.src)).endsWith(`/assets/audio/${String(id).padStart(2,'0')}.m4a`));
+ assert((await page.evaluate(()=>testAudio.src)).includes(`/assets/media/audio/${String(id).padStart(2,'0')}.`));
  if(id===1){
   const top=await page.locator('#audio-toggle').evaluate(e=>e.getBoundingClientRect().top);
   const rightBefore=await page.locator('#personal-summary').evaluate(e=>e.scrollTop);
@@ -87,10 +87,10 @@ for(const viewport of [{width:1920,height:1080},{width:1440,height:900}]){
  await close();
 }
 // Loading failure stays recoverable, without falsely showing a playing state.
-await page.route('**/assets/audio/02.m4a*',r=>r.abort());await open(2);await expand();await page.locator('#audio-toggle').click();
+await page.route('**/assets/media/audio/02.*',r=>r.abort());await open(2);await expand();await page.locator('#audio-toggle').click();
 await page.waitForFunction(()=>document.querySelector('#audio-status').textContent.includes('重试'));
 assert.equal(await page.locator('#audio-toggle').getAttribute('aria-pressed'),'false');
-await page.unroute('**/assets/audio/02.m4a*');await play();await close();
+await page.unroute('**/assets/media/audio/02.*');await play();await close();
 assert.deepEqual(errors,[]);
 console.log('PASS: real M4A playback/resume/end/replay; collapse/share/close lifecycle; corrected report mappings; both curved scrollbars; fixed toolbar; 1920 and 1440 layout; network failure retry; no page errors.');
 }catch(error){console.log(await page.evaluate(()=>({status:document.querySelector('#audio-status').textContent,paused:testAudio.paused,time:testAudio.currentTime,ready:testAudio.readyState,error:testAudio.error?.message})));throw error;}finally{await browser.close();}

@@ -4,6 +4,7 @@ import json
 import re
 import shutil
 from summary_structure import enrich
+from media_profile import apply_media
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image, ImageOps
@@ -114,6 +115,7 @@ def build():
                       'audio': {'src': audio_dest.relative_to(ROOT).as_posix(), 'type': 'audio/mp4'},
                       'personalSummary': personal,
                       'images': gallery}
+            apply_media(detail)
             (data_dir / f'{n:02d}.json').write_text(json.dumps(detail, ensure_ascii=False), encoding='utf-8', newline='\n')
             print(f'Report {n:02d}: {len(images)} images ready.', flush=True)
         manifest.append(report)

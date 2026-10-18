@@ -1,3 +1,4 @@
+import {configureMedia,mediaURL,alternateMediaURL,setMediaImage,cancelMediaImage} from './media-loader.js';
 import {PersonalSummary} from './personal-summary.js';
 import {AudioRing} from './audio-ring.js';
 import {ShareForm} from './share.js';
@@ -20,16 +21,39 @@ let curvedScrollbars = [];
 let scrollbarFrame = 0;
 const audio = new Audio();
 audio.preload='none';
-let audioRequest=0;
+let audioRequest=0, audioFallbackTimer, audioWantsPlayback=false;
+let galleryImages=new Set();
 const audioRing=new AudioRing(audio,$('#audio-control'),()=>playAudio());
 function prepareAudio(){
   if(!current)return;
   if(!audio.getAttribute('src')||audio.error){
     const retry=Boolean(audio.error);
+    if(retry)audio.datasetFallback=null;
     audio.preload='metadata';
-    audio.src=current.audio.src+(retry?`?retry=${++audioRequest}`:'');audio.load();
+    audio.src=mediaURL(current.audio.src)+(retry?`?retry=${++audioRequest}`:'');audio.load();
+    watchAudioSource();
   }
 }
+function fallbackAudio(){
+  clearTimeout(audioFallbackTimer);
+  if(!current)return false;
+  const alternative=alternateMediaURL(current.audio.src,audio.src);
+  if(audio.datasetFallback===current.id||new URL(audio.src).pathname!==new URL(alternative).pathname||new URL(audio.src).origin===new URL(alternative).origin)return false;
+  const report=current,request=++audioRequest,time=audio.currentTime||0,resume=audioWantsPlayback&&!audioRing.drag;
+  audio.datasetFallback=current.id;
+  audio.src=alternative;audio.load();
+  audio.addEventListener('loadedmetadata',()=>{
+    if(current!==report||request!==audioRequest)return;
+    if(time)audio.currentTime=Math.min(time,audio.duration);
+    if(resume)playAudio();
+  },{once:true});
+  return true;
+}
+function watchAudioSource(){
+  clearTimeout(audioFallbackTimer);
+  audioFallbackTimer=setTimeout(()=>{if(!audio.readyState)fallbackAudio();},7000);
+}
+audio.addEventListener('loadedmetadata',()=>clearTimeout(audioFallbackTimer));
 function audioUI(playing=false,message='') {
   $('#audio-toggle').classList.toggle('playing',playing);
   $('#audio-toggle').setAttribute('aria-pressed',String(playing));
@@ -38,6 +62,7 @@ function audioUI(playing=false,message='') {
 }
 function resetAudio(unload=false) {
   audioRequest++;
+  audioWantsPlayback=false;audio.datasetFallback=null;clearTimeout(audioFallbackTimer);
   audioRing.reset();
   audio.pause();
   try{audio.currentTime=0;}catch{}
@@ -51,6 +76,7 @@ async function playAudio(){
   prepareAudio();
   const request=++audioRequest;
   const report=current;
+  audioWantsPlayback=true;
   audioUI(false,'加载中…');
   try {
     if(audio.ended)audio.currentTime=0;
@@ -61,13 +87,13 @@ async function playAudio(){
 }
 $('#audio-toggle').addEventListener('click',()=>{
   audioRing.cancel(false);
-  if(!audio.paused&&!audio.error){audioRequest++;audio.pause();return;}
+  if(!audio.paused&&!audio.error){audioWantsPlayback=false;audioRequest++;audio.pause();return;}
   playAudio();
 });
 audio.addEventListener('playing',()=>audioUI(true));
 audio.addEventListener('pause',()=>audioUI(false,audio.error?'录音暂时无法播放，请点击重试':''));
-audio.addEventListener('ended',()=>audioUI());
-audio.addEventListener('error',()=>{if(audio.getAttribute('src'))audioUI(false,'录音暂时无法播放，请点击重试');});
+audio.addEventListener('ended',()=>{audioWantsPlayback=false;audioUI();});
+audio.addEventListener('error',()=>{if(audio.getAttribute('src')&&!fallbackAudio())audioUI(false,'录音暂时无法播放，请点击重试');});
 window.addEventListener('pagehide',()=>resetAudio(true));
 const gsapReady = () => Boolean(window.gsap && window.Flip);
 const duration = (seconds) => reduceMotion.matches ? .12 : seconds;
@@ -83,11 +109,13 @@ function renderHome() {
   grid.innerHTML = reports.map((report, i) => `
     <button class="card" data-id="${report.id}" style="--angle:${i % 2 ? -4 : 2}deg" aria-label="${report.code} ${escapeText(report.title)}，${escapeText(report.speaker)}，${report.time}${report.enabled ? '' : '，后续开放'}">
       <span class="card-bg"></span>
-      <img class="card-photo" src="${report.cover.src}" width="${report.cover.width}" height="${report.cover.height}" alt="${escapeText(report.title)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
+      <img class="card-photo" src="${mediaURL(report.cover.src)}" width="${report.cover.width}" height="${report.cover.height}" alt="${escapeText(report.title)}" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async">
       <span class="card-time">${report.time}</span>
       <span class="card-number">${[...report.code].map(c=>`<span>${c}</span>`).join('')}</span>
     </button>`).join('');
   grid.querySelectorAll('.card').forEach(card => {
+    const report=reports.find(r=>r.id===Number(card.dataset.id));
+    setMediaImage(card.querySelector('.card-photo'),report.cover.src,report.id<=3?'high':'low');
     card.addEventListener('click', () => openReport(Number(card.dataset.id), card));
     card.addEventListener('pointermove', event => {
       if (busy || !gsapReady() || reduceMotion.matches || event.pointerType === 'touch') return;
@@ -235,6 +263,7 @@ function imageRect(image, frame) {
 
 function buildGallery() {
   if (gsapReady()) gsap.killTweensOf(slots);
+  for(const image of galleryImages)cancelMediaImage(image);galleryImages.clear();
   track.replaceChildren();slots=[];moving=false;
   for(let offset=-2;offset<=2;offset++) {
     const index=normalize(currentImage+offset), image=current.images[index];
@@ -246,9 +275,23 @@ function buildGallery() {
     if(Math.abs(offset)<=1) {
       const img=new Image();img.alt=`${current.title} — ${index+1} / ${current.images.length}`;
       img.width=image.width;img.height=image.height;img.draggable=false;
+      galleryImages.add(img);figure.append(img);
+      const preview=index===0?(activeCard?.querySelector('.card-photo').currentSrc||reports.find(r=>r.id===current.id).cover.src):(image.preview?.src||image.src);
+      let fallback=false;
       img.addEventListener('load',()=>figure.classList.remove('pending'));
-      img.addEventListener('error',()=>{figure.classList.remove('pending');figure.innerHTML='<span class="image-retry">图片加载失败，请按左右方向键切换后重试</span>';});
-      img.src=image.src;figure.append(img);
+      img.addEventListener('error',()=>{
+        if(!fallback){fallback=true;setMediaImage(img,image.src,offset===0?'high':'low');return;}
+        figure.classList.remove('pending');figure.innerHTML='<span class="image-retry">图片加载失败，请按左右方向键切换后重试</span>';
+      });
+      if(offset===0){
+        img.addEventListener('load',()=>{
+          const full=new Image();galleryImages.add(full);
+          full.onload=()=>{if(img.isConnected)img.src=full.src;};
+          // Keep a readable preview if the high-resolution request fails.
+          setMediaImage(full,image.src,'high');
+        },{once:true});
+      }
+      setMediaImage(img,preview,offset===0?'high':'low');
     }
     track.append(figure);slots.push(figure);
   }
@@ -420,7 +463,8 @@ window.addEventListener('resize',()=>{
 
 try {
   if(gsapReady())gsap.registerPlugin(Flip);
-  const response=await fetch('data/reports.json');
+  const [response,mediaConfig]=await Promise.all([fetch('data/reports.json'),fetch('media-config.json').then(r=>r.ok?r.json():{}).catch(()=>({}))]);
+  configureMedia(mediaConfig);
   if(!response.ok)throw new Error('Content not generated');
   reports=await response.json();renderHome();
 } catch(error) {

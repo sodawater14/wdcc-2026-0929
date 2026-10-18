@@ -42,7 +42,7 @@ for report, source in zip(manifest, sorted(SOURCE.glob('*.md'))):
     assert data['title'] == report['title']
     assert 'aiSummary' not in data
     assert normalize(repaired[AUDIO_MAP[n]]) == normalize(plain_html(data['transcript'])), (n, 'repaired transcript differs')
-    audio = ROOT / data['audio']['src']
+    audio = ROOT / data['audio'].get('originalSrc', data['audio']['src'])
     assert audio.name == f'{n:02d}.m4a' and data['audio']['type'] == 'audio/mp4'
     assert hashlib.sha256(audio.read_bytes()).digest() == hashlib.sha256(audio_file(n).read_bytes()).digest(), (n, 'audio mismatch')
     def reconstruct(items):
@@ -74,10 +74,15 @@ for report, source in zip(manifest, sorted(SOURCE.glob('*.md'))):
         assert normalize(original) == normalize(plain_html(rendered)), (n, name, 'text differs')
     for i, image in enumerate(data['images'], 1):
         file = ROOT / image['src']
-        assert file.stem == f'{i:03d}' and file.exists()
+        original = ROOT / image.get('originalSrc', image['src'])
+        assert original.stem == f'{i:03d}' and original.exists() and file.exists()
         with Image.open(file) as im:
             assert im.size == (image['width'], image['height'])
             im.verify()
+        if image.get('preview'):
+            with Image.open(ROOT / image['preview']['src']) as preview:
+                assert max(preview.size) <= 640
+                preview.verify()
     total += len(data['images'])
 assert total == 390
 assert source_item_total == 166

@@ -24,7 +24,7 @@ await fs.mkdir(new URL('../qa/',import.meta.url),{recursive:true});await page.go
 for(let id=1;id<=15;id++){
  await open(id);assert.equal((await audio()).src,null);await expand();
  const info=await audio();assert(info.duration>600&&info.duration<2400);assert(info.paused);assert.equal(info.time,0);
- assert(info.src.endsWith(`/${String(id).padStart(2,'0')}.m4a`));assert.equal(await slider.getAttribute('aria-valuenow'),'0');
+ assert(info.src.includes(`/assets/media/audio/${String(id).padStart(2,'0')}.`));assert.equal(await slider.getAttribute('aria-valuenow'),'0');
  if([1,6,15].includes(id)){
   await slider.focus();await page.keyboard.press('ArrowRight');assert(Math.abs((await audio()).time-5)<.2);
   await page.keyboard.press('ArrowLeft');assert.equal((await audio()).time,0);
@@ -58,9 +58,9 @@ await down(.35);await move(.6);await shot('1440-audio-ring-seeking');
 await page.evaluate(()=>document.querySelector('#tab-share').click());await page.mouse.up();assert((await audio()).paused);assert.equal((await audio()).time,0);assert.equal(await slider.getAttribute('aria-valuenow'),'0');
 await close();
 // Failed metadata must not enable a misleading seek control.
-await page.route('**/assets/audio/02.m4a*',r=>r.abort());await open(2);await page.locator('#tab-ai').click();await page.waitForFunction(()=>Boolean(testAudio.error));
+await page.route('**/assets/media/audio/02.*',r=>r.abort());await open(2);await page.locator('#tab-ai').click();await page.waitForFunction(()=>Boolean(testAudio.error));
 assert.equal(await slider.getAttribute('aria-disabled'),'true');await click(.5);assert.equal((await audio()).time,0);
-await page.unroute('**/assets/audio/02.m4a*');await play();await page.waitForFunction(()=>document.querySelector('#audio-seek').getAttribute('aria-disabled')==='false');await close();
+await page.unroute('**/assets/media/audio/02.*');await play();await page.waitForFunction(()=>document.querySelector('#audio-seek').getAttribute('aria-disabled')==='false');await close();
 assert.deepEqual(errors,[]);
 console.log('PASS: 15 real recording durations/no autoplay; T01/T06/T15 click, keyboard, drag and seam; pause/resume/cancel; release outside ring; close/share during drag; pinned toolbar; metadata failure/retry; 1920/1440 screenshots.');
 }finally{await browser.close();}

@@ -1,0 +1,7 @@
+{
+  "name":"wdcc-0929-media",
+  "compatibility_date":"2026-10-18",
+  "workers_dev":true,
+  "preview_urls":false,
+  "assets":{"directory":"../qa/media-public"}
+}
