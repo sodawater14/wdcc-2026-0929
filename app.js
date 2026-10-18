@@ -1,8 +1,13 @@
+import {PersonalSummary} from './personal-summary.js';
+import {AudioRing} from './audio-ring.js';
+import {ShareForm} from './share.js';
 import {CurvedScrollbar} from './curved-scrollbar.js';
 const $ = (selector) => document.querySelector(selector);
 const home = $('#home'), detail = $('#detail'), grid = $('#grid');
 const gallery = $('#gallery'), track = $('#gallery-track'), bg = $('#transition-bg');
-const panels = {ai:$('#panel-ai'), personal:$('#panel-personal'), share:$('#panel-share')};
+const panels = {ai:$('#panel-ai'), share:$('#panel-share')};
+const shareForm=new ShareForm(panels.share);
+const personalSummary=new PersonalSummary($('#personal-summary'),()=>refreshCurvedScrollbars());
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const cache = new Map();
 const numberAnimations = new WeakMap();
@@ -13,6 +18,57 @@ let freshViews = new Set();
 let activeView = null;
 let curvedScrollbars = [];
 let scrollbarFrame = 0;
+const audio = new Audio();
+audio.preload='none';
+let audioRequest=0;
+const audioRing=new AudioRing(audio,$('#audio-control'),()=>playAudio());
+function prepareAudio(){
+  if(!current)return;
+  if(!audio.getAttribute('src')||audio.error){
+    const retry=Boolean(audio.error);
+    audio.preload='metadata';
+    audio.src=current.audio.src+(retry?`?retry=${++audioRequest}`:'');audio.load();
+  }
+}
+function audioUI(playing=false,message='') {
+  $('#audio-toggle').classList.toggle('playing',playing);
+  $('#audio-toggle').setAttribute('aria-pressed',String(playing));
+  $('#audio-toggle').setAttribute('aria-label',playing?'暂停录音':'播放录音');
+  $('#audio-status').textContent=message;
+}
+function resetAudio(unload=false) {
+  audioRequest++;
+  audioRing.reset();
+  audio.pause();
+  try{audio.currentTime=0;}catch{}
+  if(!unload && audio.getAttribute('src') && audio.readyState===0)audio.load();
+  if(unload){audio.removeAttribute('src');audio.load();}
+  audioUI();
+  audioRing.refresh();
+}
+async function playAudio(){
+  if(!current)return;
+  prepareAudio();
+  const request=++audioRequest;
+  const report=current;
+  audioUI(false,'加载中…');
+  try {
+    if(audio.ended)audio.currentTime=0;
+    await audio.play();
+    if(request!==audioRequest || current!==report)return;
+    audioUI(true);
+  }catch(error){if(request===audioRequest)audioUI(false,'录音暂时无法播放，请点击重试');}
+}
+$('#audio-toggle').addEventListener('click',()=>{
+  audioRing.cancel(false);
+  if(!audio.paused&&!audio.error){audioRequest++;audio.pause();return;}
+  playAudio();
+});
+audio.addEventListener('playing',()=>audioUI(true));
+audio.addEventListener('pause',()=>audioUI(false,audio.error?'录音暂时无法播放，请点击重试':''));
+audio.addEventListener('ended',()=>audioUI());
+audio.addEventListener('error',()=>{if(audio.getAttribute('src'))audioUI(false,'录音暂时无法播放，请点击重试');});
+window.addEventListener('pagehide',()=>resetAudio(true));
 const gsapReady = () => Boolean(window.gsap && window.Flip);
 const duration = (seconds) => reduceMotion.matches ? .12 : seconds;
 
@@ -98,18 +154,23 @@ async function getReport(id) {
 
 function populateReader() {
   clearCurvedScrollbars();
+  shareForm.select(current.id);
   detail.dataset.reportId=String(current.id);
-  freshViews=new Set(['ai','personal','share']);
+  freshViews=new Set(['ai','share']);
   $('#transcript').innerHTML = current.transcript;
-  $('#ai-summary').innerHTML = current.aiSummary;
-  panels.personal.innerHTML = current.personalSummary.map(s=>`<section class="personal-section"><h2>${escapeText(s.title)}</h2>${s.html}</section>`).join('');
+  resetAudio(true);
+  personalSummary.render(current.personalSummary);
   Object.values(panels).forEach(p=>p.scrollTop=0);
   $('#transcript').scrollTop=0;
-  $('#ai-summary').scrollTop=0;
+  $('#personal-summary').scrollTop=0;
   setTab(null,false);
 }
 
 function setTab(name, reveal=true) {
+  shareForm.flush();
+  if(name==='share')resetAudio();
+  if(name==='ai'&&current)prepareAudio();
+  audioRing.setVisible(name==='ai');
   activeView=name;
   $('#reader').classList.toggle('collapsed',name===null);
   Object.entries(panels).forEach(([key,panel])=>panel.hidden=key!==name);
@@ -145,7 +206,7 @@ function refreshCurvedScrollbars() {
     if(!current || activeView!=='ai' || detail.hidden)return;
     if(!curvedScrollbars.length) {
       try {
-        for(const content of [$('#transcript'),$('#ai-summary')])curvedScrollbars.push(new CurvedScrollbar(content));
+        for(const content of [$('#transcript'),$('#personal-summary')])curvedScrollbars.push(new CurvedScrollbar(content));
       } catch(error) {
         clearCurvedScrollbars();
         console.warn('Curved scrollbar unavailable; using native scrolling.',error);
@@ -160,7 +221,7 @@ $('#tabs').addEventListener('keydown',event=>{
   event.preventDefault(); event.stopPropagation();
   const tabs=[...document.querySelectorAll('.tab')];
   const index=tabs.indexOf(document.activeElement);
-  const next=event.key==='Home'?0:event.key==='End'?2:(index+(event.key==='ArrowRight'?1:2))%3;
+  const next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:tabs.length-1))%tabs.length;
   setTab(tabs[next].dataset.tab,false);tabs[next].focus();
 });
 
@@ -269,7 +330,7 @@ async function openReport(id,card) {
     const finish=()=>{
       home.hidden=true;detail.style.position='';detail.style.inset='';detail.style.visibility='';
       document.body.classList.remove('animating');document.body.classList.add('in-detail');
-      $('#transcript').scrollTop=0;$('#ai-summary').scrollTop=0;
+      $('#transcript').scrollTop=0;$('#personal-summary').scrollTop=0;
       window.scrollTo(0,0);busy=false;document.title=`${report.code} ${report.title} — WDCC 9.29`;
       $('#back').focus({preventScroll:true});
     };
@@ -304,6 +365,8 @@ async function openReport(id,card) {
 
 function closeReport() {
   if(busy||!current)return;
+  shareForm.flush();
+  resetAudio(true);
   busy=true;moving=false;clearTimeout(wheelTimer);wheelGesture=false;
   clearCurvedScrollbars();
   if(gsapReady())gsap.killTweensOf(slots);

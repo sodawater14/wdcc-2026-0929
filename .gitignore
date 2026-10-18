@@ -9,3 +9,11 @@ Thumbs.db
 node_modules/
 .env
 .env.*
+
+# Feedback secrets and local development state
+.dev.vars
+.dev.vars.*
+.wrangler/
+*.pem
+*.key
+*.sqlite*

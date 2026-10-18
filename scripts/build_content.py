@@ -2,6 +2,8 @@
 import html
 import json
 import re
+import shutil
+from summary_structure import enrich
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image, ImageOps
@@ -10,6 +12,27 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = next((p for p in [ROOT.parent / '9.29网站内容文档', ROOT.parent / '9.29' / '9.29网站内容文档'] if p.is_dir()), ROOT.parent / '9.29网站内容文档')
 ENABLED = set(range(1, 16))
 Image.MAX_IMAGE_PIXELS = None
+
+REPAIRED = ROOT.parent / 'WDCC_9.29_15场报告_录音修复版.md'
+AUDIO_SOURCE = Path(r'F:\AI-Projects\LLM-Wiki\raw\WDCC 2026\9.29\录音')
+AUDIO_MAP = {**{n:n for n in range(1,10)}, **{n:n+1 for n in range(10,15)}, 15:10}
+
+def repaired_transcripts():
+    text = REPAIRED.read_text(encoding='utf-8')
+    parts = re.split(r'^## (\d{2})｜[^\n]+\n', text, flags=re.M)[1:]
+    result = {}
+    for number, content in zip(parts[::2], parts[1::2]):
+        content = re.split(r'^---\s*$|^## 核对提示', content, maxsplit=1, flags=re.M)[0]
+        lines = content.strip().splitlines()
+        assert lines[0].startswith('原始录音：') and lines[1].startswith('Figma 转录：')
+        result[int(number)] = '\n'.join(lines[2:]).strip()
+    assert set(result) == set(range(1,16)), 'Expected 15 repaired transcripts'
+    return result
+
+def audio_file(number):
+    matches = list(AUDIO_SOURCE.glob(f'{AUDIO_MAP[number]}、*.m4a'))
+    assert len(matches) == 1, (number, 'Expected one matching recording')
+    return matches[0]
 
 def inline(text):
     return re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html.escape(text))
@@ -54,6 +77,7 @@ def convert(source, destination, longest, quality):
 
 def build():
     assert len(list(SOURCE.glob('*.md'))) == 15, 'Expected 15 source Markdown reports'
+    repaired = repaired_transcripts()
     manifest = []
     data_dir = ROOT / 'data'
     data_dir.mkdir(exist_ok=True)
@@ -77,17 +101,27 @@ def build():
             parts = re.split(r'^### (.+)\n', sections['综合提炼总结'], flags=re.M)[1:]
             for title, content in zip(parts[::2], parts[1::2]):
                 personal.append({'title': title, 'html': markdown(content)})
+            enrich(personal)
             with ThreadPoolExecutor(max_workers=4) as pool:
                 gallery = list(pool.map(lambda p: convert(p, ROOT / f'assets/reports/{n:02d}/{p.stem}.webp', 2400, 91), images))
+            audio_src = audio_file(n)
+            audio_dest = ROOT / f'assets/audio/{n:02d}.m4a'
+            audio_dest.parent.mkdir(parents=True, exist_ok=True)
+            if not audio_dest.exists() or audio_dest.stat().st_size != audio_src.stat().st_size:
+                shutil.copy2(audio_src, audio_dest)
             detail = {'id': n, 'title': meta['title'], 'speaker': meta['speaker'],
-                      'transcript': markdown(sections['AI转录原文']), 'aiSummary': markdown(sections['AI总结']),
+                      'transcript': markdown(repaired[AUDIO_MAP[n]]),
+                      'audio': {'src': audio_dest.relative_to(ROOT).as_posix(), 'type': 'audio/mp4'},
                       'personalSummary': personal,
                       'images': gallery}
-            (data_dir / f'{n:02d}.json').write_text(json.dumps(detail, ensure_ascii=False), encoding='utf-8')
+            (data_dir / f'{n:02d}.json').write_text(json.dumps(detail, ensure_ascii=False), encoding='utf-8', newline='\n')
             print(f'Report {n:02d}: {len(images)} images ready.', flush=True)
         manifest.append(report)
     assert len(manifest) == 15
-    (data_dir / 'reports.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
+    (data_dir / 'reports.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8', newline='\n')
+    backend_dir = ROOT / 'backend'
+    backend_dir.mkdir(exist_ok=True)
+    (backend_dir / 'reports.json').write_text(json.dumps([{k: r[k] for k in ['id', 'title', 'speaker']} for r in manifest], ensure_ascii=False, indent=2), encoding='utf-8', newline='\n')
     print(f'Generated {len(manifest)} covers and {len(ENABLED)} full reports ({sum(r["imageCount"] for r in manifest if r["enabled"])} images).')
 
 if __name__ == '__main__':

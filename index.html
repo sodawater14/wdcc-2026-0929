@@ -27,15 +27,14 @@
     </section>
     <div id="reader" class="reader collapsed">
       <nav id="tabs" class="tabs" aria-label="文案视图" role="tablist">
-        <button id="tab-ai" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-ai" data-tab="ai">AI转录原文 × AI总结</button>
+        <button id="tab-ai" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-ai" data-tab="ai">AI转录修复版 × 个人总结</button>
         <button id="tab-share" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-share" data-tab="share">分享你的看法吧</button>
-        <button id="tab-personal" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-personal" data-tab="personal">个人总结</button>
+
       </nav>
       <div id="panel-ai" class="panel ai-panel" role="tabpanel" aria-labelledby="tab-ai" hidden>
-        <div class="scroll-shell transcript-shell"><div id="transcript" class="reading-scroll transcript" tabindex="0" aria-label="AI转录原文"></div></div>
-        <div class="scroll-shell summary-shell"><div id="ai-summary" class="reading-scroll ai-summary" tabindex="0" aria-label="AI总结"></div></div>
+        <div class="scroll-shell transcript-shell"><div class="audio-toolbar"><div id="audio-control" class="audio-control"><svg id="audio-seek" class="audio-ring" viewBox="0 0 48 48" role="slider" tabindex="0" aria-label="录音播放进度" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-disabled="true" aria-describedby="audio-time"><circle class="audio-ring-track" cx="24" cy="24" r="22"/><circle class="audio-progress" cx="24" cy="24" r="22" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/><circle class="audio-ring-hit" cx="24" cy="24" r="22"/><circle class="audio-progress-dot" cx="24" cy="2" r="2.5"/></svg><button id="audio-toggle" class="audio-toggle" aria-label="播放录音" aria-pressed="false"></button><span id="audio-time" class="audio-time">0:00 / --:--</span></div><span id="audio-status" class="audio-status" role="status"></span></div><div id="transcript" class="reading-scroll transcript" tabindex="0" aria-label="AI转录修复版"></div></div>
+        <div class="scroll-shell summary-shell"><div id="personal-summary" class="reading-scroll personal-summary" tabindex="0" aria-label="个人总结"></div></div>
       </div>
-      <div id="panel-personal" class="panel reading-scroll personal-panel" role="tabpanel" aria-labelledby="tab-personal" tabindex="0" hidden></div>
       <div id="panel-share" class="panel share-panel" role="tabpanel" aria-labelledby="tab-share" hidden></div>
     </div>
   </article>

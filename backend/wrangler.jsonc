@@ -1,0 +1,16 @@
+{
+  "name":"wdcc-0929-feedback",
+  "main":"worker.mjs",
+  "compatibility_date":"2026-10-18",
+  "workers_dev":true,
+  "preview_urls":false,
+  "observability":{"enabled":false},
+  "triggers":{"crons":["*/5 * * * *"]},
+  "vars":{
+    "ALLOWED_ORIGINS":"https://sodawater14.github.io,http://127.0.0.1:4187,http://localhost:4187",
+    "TURNSTILE_HOSTNAMES":"sodawater14.github.io,localhost,127.0.0.1",
+    "GITHUB_OWNER":"sodawater14",
+    "GITHUB_REPO":"wdcc-2026-0929-feedback"
+  },
+  "d1_databases":[{"binding":"DB","database_name":"wdcc-0929-feedback","database_id":"e130d50e-9e17-4c00-ae09-aa619393225e","migrations_dir":"migrations"}]
+}
