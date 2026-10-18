@@ -13,8 +13,10 @@ export class AudioRing {
     this.progress=root.querySelector('.audio-progress');
     this.dot=root.querySelector('.audio-progress-dot');
     this.hint=root.querySelector('.audio-time');
-    this.drag=null;this.frame=0;this.visible=false;
+    this.drag=null;this.pending=null;this.frame=0;this.visible=false;
     for(const event of ['loadedmetadata','durationchange','timeupdate','seeked','emptied','pause','ended'])audio.addEventListener(event,()=>this.refresh());
+    audio.addEventListener('seeking',()=>{this.pending=this.audio.currentTime;this.refresh();});
+    audio.addEventListener('seeked',()=>{this.pending=null;this.refresh();});
     audio.addEventListener('playing',()=>{this.refresh();this.animate();});
     audio.addEventListener('error',()=>{this.cancel(false);this.refresh();});
     this.slider.addEventListener('pointerdown',event=>this.start(event));
@@ -33,7 +35,7 @@ export class AudioRing {
   }
   refresh(){
     const duration=this.duration;
-    const time=this.drag?this.drag.progress*duration:this.audio.currentTime||0;
+    const time=this.drag?this.drag.progress*duration:(this.pending??this.audio.currentTime)||0;
     const progress=duration?clamp(time/duration):0;
     this.progress.setAttribute('stroke-dashoffset',String(100-progress*100));
     const angle=progress*Math.PI*2;
@@ -43,7 +45,7 @@ export class AudioRing {
     this.slider.setAttribute('aria-valuemax',String(duration||0));
     this.slider.setAttribute('aria-valuenow',String(duration?Math.min(duration,Number(time.toFixed(2))):0));
     this.slider.setAttribute('aria-valuetext',duration?`${format(time)} / ${format(duration)}`:'录音时长加载后可调节进度');
-    this.hint.textContent=`${this.drag?'跳转至 ':''}${format(time)} / ${format(duration||NaN)}`;
+    this.hint.textContent=`${this.drag?'跳转至 ':this.pending!==null?'正在定位 ':''}${format(time)} / ${format(duration||NaN)}`;
     this.root.classList.toggle('seek-ready',Boolean(duration));
     if(this.audio.paused||!this.visible){cancelAnimationFrame(this.frame);this.frame=0;}
   }
@@ -89,8 +91,8 @@ export class AudioRing {
   }
   seek(time,resume){
     if(!this.duration)return;
-    try{this.audio.currentTime=Math.max(0,Math.min(this.duration,time));}
-    catch{this.refresh();return;}
+    try{this.pending=Math.max(0,Math.min(this.duration,time));this.audio.currentTime=this.pending;}
+    catch{this.pending=null;this.refresh();return;}
     this.refresh();
     if(resume&&time<this.duration)this.resume();
   }
@@ -100,7 +102,7 @@ export class AudioRing {
     this.refresh();
   }
   reset(){
-    this.cancel(false);cancelAnimationFrame(this.frame);this.frame=0;this.visible=false;
+    this.pending=null;this.cancel(false);cancelAnimationFrame(this.frame);this.frame=0;this.visible=false;
   }
   keyboard(event){
     if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;

@@ -22,13 +22,14 @@ let scrollbarFrame = 0;
 const audio = new Audio();
 audio.preload='none';
 let audioRequest=0, audioFallbackTimer, audioWantsPlayback=false;
+const audioFallbackSources=new Set();
 let galleryImages=new Set();
 const audioRing=new AudioRing(audio,$('#audio-control'),()=>playAudio());
 function prepareAudio(){
   if(!current)return;
   if(!audio.getAttribute('src')||audio.error){
     const retry=Boolean(audio.error);
-    if(retry)audio.datasetFallback=null;
+    if(retry)audioFallbackSources.clear();
     audio.preload='metadata';
     audio.src=mediaURL(current.audio.src)+(retry?`?retry=${++audioRequest}`:'');audio.load();
     watchAudioSource();
@@ -38,9 +39,11 @@ function fallbackAudio(){
   clearTimeout(audioFallbackTimer);
   if(!current)return false;
   const alternative=alternateMediaURL(current.audio.src,audio.src);
-  if(audio.datasetFallback===current.id||new URL(audio.src).pathname!==new URL(alternative).pathname||new URL(audio.src).origin===new URL(alternative).origin)return false;
+  // Pages has a repository prefix; the edge host serves the same asset at root.
+  // Compare origins, not pathnames, and never cycle failed sources.
+  if(new URL(audio.src).origin===new URL(alternative).origin||audioFallbackSources.has(alternative))return false;
   const report=current,request=++audioRequest,time=audio.currentTime||0,resume=audioWantsPlayback&&!audioRing.drag;
-  audio.datasetFallback=current.id;
+  audioFallbackSources.add(audio.src);audioFallbackSources.add(alternative);
   audio.src=alternative;audio.load();
   audio.addEventListener('loadedmetadata',()=>{
     if(current!==report||request!==audioRequest)return;
@@ -51,7 +54,14 @@ function fallbackAudio(){
 }
 function watchAudioSource(){
   clearTimeout(audioFallbackTimer);
-  audioFallbackTimer=setTimeout(()=>{if(!audio.readyState)fallbackAudio();},7000);
+  const report=current;
+  audioFallbackTimer=setTimeout(()=>{
+    if(!report||current!==report)return;
+    if(!audio.readyState||audio.seeking||(audioWantsPlayback&&audio.readyState<3)){
+      if(fallbackAudio())watchAudioSource();
+      else audioUI(false,'目标位置加载较慢，请稍候或点击播放重试');
+    }
+  },6000);
 }
 audio.addEventListener('loadedmetadata',()=>clearTimeout(audioFallbackTimer));
 function audioUI(playing=false,message='') {
@@ -62,7 +72,7 @@ function audioUI(playing=false,message='') {
 }
 function resetAudio(unload=false) {
   audioRequest++;
-  audioWantsPlayback=false;audio.datasetFallback=null;clearTimeout(audioFallbackTimer);
+  audioWantsPlayback=false;audioFallbackSources.clear();clearTimeout(audioFallbackTimer);
   audioRing.reset();
   audio.pause();
   try{audio.currentTime=0;}catch{}
@@ -88,9 +98,18 @@ async function playAudio(){
 $('#audio-toggle').addEventListener('click',()=>{
   audioRing.cancel(false);
   if(!audio.paused&&!audio.error){audioWantsPlayback=false;audioRequest++;audio.pause();return;}
+  if(audio.readyState<3)audioFallbackSources.clear();
   playAudio();
 });
-audio.addEventListener('playing',()=>audioUI(true));
+audio.addEventListener('seeking',()=>{audioUI(false,'正在定位…');watchAudioSource();});
+audio.addEventListener('waiting',()=>{audioUI(false,audio.seeking?'正在定位…':'缓冲中…');watchAudioSource();});
+audio.addEventListener('stalled',()=>{if(audio.seeking||audioWantsPlayback)watchAudioSource();});
+audio.addEventListener('seeked',()=>{
+  clearTimeout(audioFallbackTimer);
+  if(audioWantsPlayback&&audio.readyState<3)watchAudioSource();
+  audioUI(!audio.paused);
+});
+audio.addEventListener('playing',()=>{clearTimeout(audioFallbackTimer);audioFallbackSources.clear();audioUI(true);});
 audio.addEventListener('pause',()=>audioUI(false,audio.error?'录音暂时无法播放，请点击重试':''));
 audio.addEventListener('ended',()=>{audioWantsPlayback=false;audioUI();});
 audio.addEventListener('error',()=>{if(audio.getAttribute('src')&&!fallbackAudio())audioUI(false,'录音暂时无法播放，请点击重试');});
