@@ -1,0 +1,212 @@
+[
+  {
+    "id": 1,
+    "code": "T01",
+    "title": "AI Native三维数字引擎与三维场景智能生成",
+    "speaker": "张松海",
+    "time": "09:51",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/01.webp",
+      "width": 800,
+      "height": 381
+    },
+    "imageCount": 20
+  },
+  {
+    "id": 2,
+    "code": "T02",
+    "title": "基于虚实融合的人机共生仿真平台",
+    "speaker": "屠长河",
+    "time": "10:13",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/02.webp",
+      "width": 800,
+      "height": 417
+    },
+    "imageCount": 30
+  },
+  {
+    "id": 3,
+    "code": "T03",
+    "title": "三维内容高效交互技术",
+    "speaker": "王莉莉",
+    "time": "10:34",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/03.webp",
+      "width": 800,
+      "height": 408
+    },
+    "imageCount": 30
+  },
+  {
+    "id": 4,
+    "code": "T04",
+    "title": "基于简易设备的交互人体运动感知",
+    "speaker": "徐枫",
+    "time": "10:53",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/04.webp",
+      "width": 800,
+      "height": 380
+    },
+    "imageCount": 21
+  },
+  {
+    "id": 5,
+    "code": "T05",
+    "title": "机器人具身导航与操作",
+    "speaker": "王贺升",
+    "time": "11:17",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/05.webp",
+      "width": 800,
+      "height": 356
+    },
+    "imageCount": 29
+  },
+  {
+    "id": 6,
+    "code": "T06",
+    "title": "人智协同的双重设计——在共创中设计协同智能体",
+    "speaker": "卢暾",
+    "time": "11:39",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/06.webp",
+      "width": 800,
+      "height": 401
+    },
+    "imageCount": 30
+  },
+  {
+    "id": 7,
+    "code": "T07",
+    "title": "工业级灵巧手的技术演进与应用场景",
+    "speaker": "肖骄",
+    "time": "12:06",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/07.webp",
+      "width": 800,
+      "height": 390
+    },
+    "imageCount": 15
+  },
+  {
+    "id": 8,
+    "code": "T08",
+    "title": "从“需求”到“体验”：效果驱动下的逆向智能设计研究",
+    "speaker": "曹楠",
+    "time": "14:01",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/08.webp",
+      "width": 800,
+      "height": 400
+    },
+    "imageCount": 27
+  },
+  {
+    "id": 9,
+    "code": "T09",
+    "title": "情感大模型：从判断式情感识别迈向生成式情感理解",
+    "speaker": "连证",
+    "time": "14:27",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/09.webp",
+      "width": 800,
+      "height": 356
+    },
+    "imageCount": 23
+  },
+  {
+    "id": 10,
+    "code": "T10",
+    "title": "面向人智协同的人机交互界面评估与优化",
+    "speaker": "陈晓皎",
+    "time": "14:47",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/10.webp",
+      "width": 800,
+      "height": 350
+    },
+    "imageCount": 25
+  },
+  {
+    "id": 11,
+    "code": "T11",
+    "title": "人智共创的设计研究与实践创新思考",
+    "speaker": "王巍",
+    "time": "15:21",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/11.webp",
+      "width": 800,
+      "height": 402
+    },
+    "imageCount": 23
+  },
+  {
+    "id": 12,
+    "code": "T12",
+    "title": "柔性壁垒：AI时代设计的战略判断、系统与关系",
+    "speaker": "王昀",
+    "time": "15:42",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/12.webp",
+      "width": 800,
+      "height": 383
+    },
+    "imageCount": 26
+  },
+  {
+    "id": 13,
+    "code": "T13",
+    "title": "从智能生成到人文智性：交互中的关系与对话",
+    "speaker": "吕曦",
+    "time": "16:06",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/13.webp",
+      "width": 800,
+      "height": 390
+    },
+    "imageCount": 21
+  },
+  {
+    "id": 14,
+    "code": "T14",
+    "title": "大设计大模型与智能体创新应用",
+    "speaker": "王萌",
+    "time": "16:26",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/14.webp",
+      "width": 800,
+      "height": 387
+    },
+    "imageCount": 32
+  },
+  {
+    "id": 15,
+    "code": "T15",
+    "title": "人智协同设计研究及实践——以中国新能源汽车座舱设计为例",
+    "speaker": "胡伟峰",
+    "time": "16:49",
+    "enabled": true,
+    "cover": {
+      "src": "assets/covers/15.webp",
+      "width": 800,
+      "height": 457
+    },
+    "imageCount": 38
+  }
+]

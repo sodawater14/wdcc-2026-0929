@@ -1,0 +1,11 @@
+# Local visual checks and machine-specific browser test runners
+/qa/
+/scripts/browser_check.mjs
+/scripts/curved_scrollbar_check.mjs
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+node_modules/
+.env
+.env.*

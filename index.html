@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#e8e8e8">
+  <meta name="description" content="Su Runxiang — WDCC 2026，同济大学 9.29 的十五场报告记录。">
+  <title>WDCC 2026 / 9.29 TJU</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="vendor/gsap.min.js"></script>
+  <script defer src="vendor/Flip.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <main id="home">
+    <header class="masthead">
+      <div class="identity"><span>Su Runxiang</span><span class="identity-rule"></span><span>WDCC 2026<br>9.29 TJU</span></div>
+      <span>Records of 15 Presentations</span>
+    </header>
+    <div id="grid" class="grid" aria-label="十五场报告"></div>
+  </main>
+  <article id="detail" class="detail" aria-label="报告详情" hidden>
+    <div class="detail-top"><button id="back" class="text-button">Back</button></div>
+    <section id="gallery" class="gallery" aria-label="报告图片，滚轮、拖动或左右方向键切换" tabindex="0">
+      <div id="gallery-track" class="gallery-track"></div>
+      <span id="gallery-status" class="sr-only" aria-live="polite"></span>
+    </section>
+    <div id="reader" class="reader collapsed">
+      <nav id="tabs" class="tabs" aria-label="文案视图" role="tablist">
+        <button id="tab-ai" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-ai" data-tab="ai">AI转录原文 × AI总结</button>
+        <button id="tab-share" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-share" data-tab="share">分享你的看法吧</button>
+        <button id="tab-personal" class="text-button tab" role="tab" aria-selected="false" aria-controls="panel-personal" data-tab="personal">个人总结</button>
+      </nav>
+      <div id="panel-ai" class="panel ai-panel" role="tabpanel" aria-labelledby="tab-ai" hidden>
+        <div class="scroll-shell transcript-shell"><div id="transcript" class="reading-scroll transcript" tabindex="0" aria-label="AI转录原文"></div></div>
+        <div class="scroll-shell summary-shell"><div id="ai-summary" class="reading-scroll ai-summary" tabindex="0" aria-label="AI总结"></div></div>
+      </div>
+      <div id="panel-personal" class="panel reading-scroll personal-panel" role="tabpanel" aria-labelledby="tab-personal" tabindex="0" hidden></div>
+      <div id="panel-share" class="panel share-panel" role="tabpanel" aria-labelledby="tab-share" hidden></div>
+    </div>
+  </article>
+  <div id="transition-bg" aria-hidden="true"></div>
+  <div id="toast" role="status"></div>
+  <div id="error" role="alert" hidden></div>
+</body>
+</html>
