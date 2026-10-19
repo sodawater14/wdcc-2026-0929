@@ -98,3 +98,12 @@
 .summary-children>.summary-item:last-child{margin-bottom:0}
 .summary-keywords{display:flex;flex-wrap:wrap;justify-content:center;column-gap:24px;row-gap:14px;line-height:1.6;padding:0 5px 10px}
 .summary-keyword{max-width:100%;overflow-wrap:anywhere}
+
+/* Additive full-screen image viewer; audio and report state remain mounted. */
+body.image-zoom-open{overflow:hidden}
+.image-zoom{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;padding:36px 24px 48px;background:rgba(241,241,241,.98);color:var(--blue);overflow:hidden;cursor:zoom-out}
+.image-zoom::backdrop{background:rgba(241,241,241,.98)}
+.image-zoom[open]{display:flex;align-items:center;justify-content:center}
+.image-zoom>img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.image-zoom-close{position:absolute;right:24px;top:10px;padding:5px 8px;background:var(--detail);border:0;color:var(--blue);font-size:16px;cursor:zoom-out}
+.image-zoom-hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:13px;pointer-events:none}

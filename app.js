@@ -1,3 +1,4 @@
+import {ImageZoom} from './image-zoom.js?v=zoom-1';
 import {configureMedia,mediaURL,alternateMediaURL,setMediaImage,cancelMediaImage} from './media-loader.js?v=range-3';
 import {PersonalSummary} from './personal-summary.js';
 import {AudioRing} from './audio-ring.js?v=range-3';
@@ -24,6 +25,7 @@ audio.preload='none';
 let audioRequest=0, audioFallbackTimer, audioWantsPlayback=false;
 const audioFallbackSources=new Set();
 let galleryImages=new Set();
+new ImageZoom(gallery,()=>Boolean(current)&&!busy&&!moving);
 const audioRing=new AudioRing(audio,$('#audio-control'),()=>playAudio(),(time,resume)=>fallbackAudio(time,resume));
 function prepareAudio(){
   if(!current)return;
