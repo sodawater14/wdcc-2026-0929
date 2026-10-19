@@ -7,16 +7,21 @@ const format=value=>{
 
 /** A seek control for the existing shared audio element; never owns a second player. */
 export class AudioRing {
-  constructor(audio,root,resume){
-    this.audio=audio;this.root=root;this.resume=resume;
+  constructor(audio,root,resume,recover=()=>false){
+    this.audio=audio;this.root=root;this.resume=resume;this.recover=recover;this.seekResume=false;
     this.slider=root.querySelector('[role="slider"]');
     this.progress=root.querySelector('.audio-progress');
     this.dot=root.querySelector('.audio-progress-dot');
     this.hint=root.querySelector('.audio-time');
     this.drag=null;this.pending=null;this.frame=0;this.visible=false;
     for(const event of ['loadedmetadata','durationchange','timeupdate','seeked','emptied','pause','ended'])audio.addEventListener(event,()=>this.refresh());
-    audio.addEventListener('seeking',()=>{this.pending=this.audio.currentTime;this.refresh();});
-    audio.addEventListener('seeked',()=>{this.pending=null;this.refresh();});
+    audio.addEventListener('seeking',()=>{if(this.pending===null)this.pending=this.audio.currentTime;this.refresh();});
+    audio.addEventListener('seeked',()=>{
+      if(this.pending!==null&&Math.abs(this.audio.currentTime-this.pending)>1){
+        if(this.recover(this.pending,this.seekResume)){this.refresh();return;}
+      }
+      this.pending=null;this.refresh();
+    });
     audio.addEventListener('playing',()=>{this.refresh();this.animate();});
     audio.addEventListener('error',()=>{this.cancel(false);this.refresh();});
     this.slider.addEventListener('pointerdown',event=>this.start(event));
@@ -91,6 +96,7 @@ export class AudioRing {
   }
   seek(time,resume){
     if(!this.duration)return;
+    this.seekResume=resume;
     try{this.pending=Math.max(0,Math.min(this.duration,time));this.audio.currentTime=this.pending;}
     catch{this.pending=null;this.refresh();return;}
     this.refresh();

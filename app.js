@@ -1,6 +1,6 @@
-import {configureMedia,mediaURL,alternateMediaURL,setMediaImage,cancelMediaImage} from './media-loader.js';
+import {configureMedia,mediaURL,alternateMediaURL,setMediaImage,cancelMediaImage} from './media-loader.js?v=range-3';
 import {PersonalSummary} from './personal-summary.js';
-import {AudioRing} from './audio-ring.js';
+import {AudioRing} from './audio-ring.js?v=range-3';
 import {ShareForm} from './share.js';
 import {CurvedScrollbar} from './curved-scrollbar.js';
 const $ = (selector) => document.querySelector(selector);
@@ -24,25 +24,25 @@ audio.preload='none';
 let audioRequest=0, audioFallbackTimer, audioWantsPlayback=false;
 const audioFallbackSources=new Set();
 let galleryImages=new Set();
-const audioRing=new AudioRing(audio,$('#audio-control'),()=>playAudio());
+const audioRing=new AudioRing(audio,$('#audio-control'),()=>playAudio(),(time,resume)=>fallbackAudio(time,resume));
 function prepareAudio(){
   if(!current)return;
   if(!audio.getAttribute('src')||audio.error){
     const retry=Boolean(audio.error);
     if(retry)audioFallbackSources.clear();
     audio.preload='metadata';
-    audio.src=mediaURL(current.audio.src)+(retry?`?retry=${++audioRequest}`:'');audio.load();
+    audio.src=mediaURL(current.audio.src)+(retry?`&retry=${++audioRequest}`:'');audio.load();
     watchAudioSource();
   }
 }
-function fallbackAudio(){
+function fallbackAudio(targetTime,shouldResume){
   clearTimeout(audioFallbackTimer);
   if(!current)return false;
   const alternative=alternateMediaURL(current.audio.src,audio.src);
   // Pages has a repository prefix; the edge host serves the same asset at root.
   // Compare origins, not pathnames, and never cycle failed sources.
   if(new URL(audio.src).origin===new URL(alternative).origin||audioFallbackSources.has(alternative))return false;
-  const report=current,request=++audioRequest,time=audio.currentTime||0,resume=audioWantsPlayback&&!audioRing.drag;
+  const report=current,request=++audioRequest,time=targetTime??audio.currentTime??0,resume=shouldResume??(audioWantsPlayback&&!audioRing.drag);
   audioFallbackSources.add(audio.src);audioFallbackSources.add(alternative);
   audio.src=alternative;audio.load();
   audio.addEventListener('loadedmetadata',()=>{

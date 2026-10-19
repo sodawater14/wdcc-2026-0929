@@ -4,10 +4,11 @@ const local=['localhost','127.0.0.1'].includes(location.hostname);
 const absolute=src=>new URL(src,document.baseURI).href;
 const at=(base,src)=>base?new URL(src,base).href:absolute(src);
 
-export function mediaURL(src){return at(selectedBase,src);}
+const versionAudio=url=>{const u=new URL(url);if(u.pathname.endsWith('.m4a'))u.searchParams.set('stream','range-v2');return u.href;};
+export function mediaURL(src){return versionAudio(at(selectedBase,src));}
 export function alternateMediaURL(src,usedURL){
-  if(usedURL)return new URL(usedURL).origin===new URL(absolute(src)).origin?at(edgeBase,src):absolute(src);
-  return at(selectedBase?'':edgeBase,src);
+  if(usedURL)return versionAudio(new URL(usedURL).origin===new URL(absolute(src)).origin?at(edgeBase,src):absolute(src));
+  return versionAudio(at(selectedBase?'':edgeBase,src));
 }
 
 export function configureMedia(config){
