@@ -35,9 +35,18 @@
     section.append(layer);
     const [horizontal, vertical] = layer.querySelectorAll('svg');
     const turbulence = [...layer.querySelectorAll('feTurbulence')];
-    const states = [...section.querySelectorAll('.credits')].map(line => ({
-      line, split: new SplitText(line, { type: 'chars', charsClass: 'closing__char', aria: 'auto' }),
-    }));
+    const dayChars = new SplitText(section.querySelector('.closing__day'), {
+      type: 'chars', charsClass: 'closing__day-char', aria: 'none',
+    }).chars;
+    const states = [...section.querySelectorAll('.closing__row')].map(line => {
+      const text = new SplitText(line.querySelector('.credits'), {
+        type: 'chars', charsClass: 'closing__char', aria: 'auto',
+      });
+      const number = new SplitText(line.querySelector('.closing__number'), {
+        type: 'chars', charsClass: 'closing__char', aria: 'none',
+      });
+      return { line, split: { chars: [...text.chars, ...number.chars, ...dayChars] } };
+    });
     const noise = { value: 0 };
     const pointer = { x: 0, y: 0, known: false };
     let active = false, frame = 0, hovered = null, x = 0, y = 0;

@@ -33,11 +33,28 @@ data.keywords.flat().forEach(word => {
   document.querySelector('#keywords').append(span);
 });
 
-data.closing.forEach(line => {
+const dayWord = document.createElement('div');
+dayWord.className = 'closing__day';
+for (const letter of 'DAY') {
+  const span = document.createElement('span');
+  span.textContent = letter;
+  dayWord.append(span);
+}
+dayWord.setAttribute('aria-hidden', 'true');
+document.querySelector('#closing-lines').append(dayWord);
+const dayNumbers = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'];
+data.closing.forEach((line, index) => {
+  const row = document.createElement('div');
+  row.className = 'closing__row';
   const paragraph = document.createElement('p');
   paragraph.className = 'credits font-alt';
   paragraph.textContent = line;
-  document.querySelector('#closing-lines').append(paragraph);
+  const number = document.createElement('span');
+  number.className = 'closing__number';
+  number.textContent = dayNumbers[index];
+  number.setAttribute('aria-hidden', 'true');
+  row.append(paragraph, number);
+  document.querySelector('#closing-lines').append(row);
 });
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
