@@ -158,14 +158,18 @@ const animateGridFull = () => {
 
 // Move all five lines together so their horizontal alignment stays centered.
 const animateCredits = () => {
+  gsap.to('.overview', {
+    scale: 0.96, autoAlpha: 0, ease: 'none',
+    scrollTrigger: { trigger: '.closing', start: 'top 95%', end: 'top 15%', scrub: true },
+  });
   gsap.from('.closing__lines', {
     y: 24,
     autoAlpha: 0,
     ease: 'sine.out',
     scrollTrigger: {
       trigger: '.closing',
-      start: 'top 85%',
-      end: 'top 35%',
+      start: 'top 90%',
+      end: 'top 15%',
       scrub: true,
     },
   });
@@ -178,6 +182,7 @@ const init = () => {
   animateTextElement();   // Animate the split text on scroll
   animateGridFull();      // Animate the full grid with staggered delay
   animateCredits();       // Call the credits animation
+  window.WDCCClosing?.init();
 };
 
 // Preload images and initialize animations after the images have loaded
