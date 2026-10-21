@@ -1,0 +1,822 @@
+{
+  "title": "WDCC 2026 论坛分享",
+  "author": "苏润祥",
+  "figma": "https://www.figma.com/design/3ZPE3CaT41Pc2r1SEZ71tV/?node-id=0-1",
+  "orderPolicy": "Visual rows top to bottom; left to right within each row. 250px row tolerance handles hand-aligned offsets.",
+  "imagePolicy": "Full source preserved with contain in a 1920x1080 frame; no daily quotas or added selections.",
+  "cover": {
+    "src": "assets/images/cover.webp",
+    "figmaFrameId": "10:41"
+  },
+  "keywords": [
+    [
+      "移动机器人",
+      "机械手",
+      "智能制造",
+      "辅助出行",
+      "材料探索",
+      "日常产品"
+    ],
+    [
+      "论坛对话",
+      "教育重构",
+      "文化转译",
+      "人因设计",
+      "工业数字人",
+      "舒适体验",
+      "设计素养"
+    ],
+    [
+      "服务业变革",
+      "生成式方法",
+      "医疗服务",
+      "讲解智能体",
+      "端侧应用",
+      "价值共创"
+    ],
+    [
+      "可用三维",
+      "虚实交互",
+      "精细操作",
+      "情感理解",
+      "协同机制",
+      "价值判断"
+    ],
+    [
+      "未来城市",
+      "交通协同",
+      "微出行",
+      "骑行文化",
+      "人本城市"
+    ]
+  ],
+  "closing": [
+    "看见设计的多种可能",
+    "重新理解设计的价值",
+    "AI 进入设计与服务流程",
+    "从智能能力走向人智协同",
+    "从出行工具走向城市生活"
+  ],
+  "images": [
+    {
+      "order": 1,
+      "src": "assets/images/01.webp",
+      "day": "9.26",
+      "sourceName": "DSC01730.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:2",
+      "figmaPosition": {
+        "x": -7702,
+        "y": -5043
+      },
+      "alt": "9.26 WDCC现场记录，DSC01730",
+      "fit": "contain"
+    },
+    {
+      "order": 2,
+      "src": "assets/images/02.webp",
+      "day": "9.26",
+      "sourceName": "DSC01729.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:3",
+      "figmaPosition": {
+        "x": -3408,
+        "y": -5043
+      },
+      "alt": "9.26 WDCC现场记录，DSC01729",
+      "fit": "contain"
+    },
+    {
+      "order": 3,
+      "src": "assets/images/03.webp",
+      "day": "9.26",
+      "sourceName": "DSC01743.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:4",
+      "figmaPosition": {
+        "x": -7702,
+        "y": -2574
+      },
+      "alt": "9.26 WDCC现场记录，DSC01743",
+      "fit": "contain"
+    },
+    {
+      "order": 4,
+      "src": "assets/images/04.webp",
+      "day": "9.26",
+      "sourceName": "DSC01754.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:5",
+      "figmaPosition": {
+        "x": -3408,
+        "y": -2574
+      },
+      "alt": "9.26 WDCC现场记录，DSC01754",
+      "fit": "contain"
+    },
+    {
+      "order": 5,
+      "src": "assets/images/05.webp",
+      "day": "9.26",
+      "sourceName": "DSC01735.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:19",
+      "figmaPosition": {
+        "x": -7624,
+        "y": 51
+      },
+      "alt": "9.26 WDCC现场记录，DSC01735",
+      "fit": "contain"
+    },
+    {
+      "order": 6,
+      "src": "assets/images/06.webp",
+      "day": "9.26",
+      "sourceName": "DSC01781.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:8",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 51
+      },
+      "alt": "9.26 WDCC现场记录，DSC01781",
+      "fit": "contain"
+    },
+    {
+      "order": 7,
+      "src": "assets/images/07.webp",
+      "day": "9.26",
+      "sourceName": "DSC01738.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:20",
+      "figmaPosition": {
+        "x": -7624,
+        "y": 2520
+      },
+      "alt": "9.26 WDCC现场记录，DSC01738",
+      "fit": "contain"
+    },
+    {
+      "order": 8,
+      "src": "assets/images/08.webp",
+      "day": "9.26",
+      "sourceName": "DSC01784.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:21",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 2520
+      },
+      "alt": "9.26 WDCC现场记录，DSC01784",
+      "fit": "contain"
+    },
+    {
+      "order": 9,
+      "src": "assets/images/09.webp",
+      "day": "9.26",
+      "sourceName": "DSC01766.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:7",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 4989
+      },
+      "alt": "9.26 WDCC现场记录，DSC01766",
+      "fit": "contain"
+    },
+    {
+      "order": 10,
+      "src": "assets/images/10.webp",
+      "day": "9.26",
+      "sourceName": "DSC01824.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:11",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 4989
+      },
+      "alt": "9.26 WDCC现场记录，DSC01824",
+      "fit": "contain"
+    },
+    {
+      "order": 11,
+      "src": "assets/images/11.webp",
+      "day": "9.26",
+      "sourceName": "DSC01813.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:10",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 7450
+      },
+      "alt": "9.26 WDCC现场记录，DSC01813",
+      "fit": "contain"
+    },
+    {
+      "order": 12,
+      "src": "assets/images/12.webp",
+      "day": "9.26",
+      "sourceName": "IMG_4638.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:17",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 7451
+      },
+      "alt": "9.26 WDCC现场记录，IMG_4638",
+      "fit": "contain"
+    },
+    {
+      "order": 13,
+      "src": "assets/images/13.webp",
+      "day": "9.26",
+      "sourceName": "DSC01881.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:14",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 9911
+      },
+      "alt": "9.26 WDCC现场记录，DSC01881",
+      "fit": "contain"
+    },
+    {
+      "order": 14,
+      "src": "assets/images/14.webp",
+      "day": "9.26",
+      "sourceName": "DSC01882.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:15",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 9911
+      },
+      "alt": "9.26 WDCC现场记录，DSC01882",
+      "fit": "contain"
+    },
+    {
+      "order": 15,
+      "src": "assets/images/15.webp",
+      "day": "9.26",
+      "sourceName": "DSC01885.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:16",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 12380
+      },
+      "alt": "9.26 WDCC现场记录，DSC01885",
+      "fit": "contain"
+    },
+    {
+      "order": 16,
+      "src": "assets/images/16.webp",
+      "day": "9.26",
+      "sourceName": "DSC01877.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:13",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 12381
+      },
+      "alt": "9.26 WDCC现场记录，DSC01877",
+      "fit": "contain"
+    },
+    {
+      "order": 17,
+      "src": "assets/images/17.webp",
+      "day": "9.26",
+      "sourceName": "IMG_4640.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "4:18",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 14849
+      },
+      "alt": "9.26 WDCC现场记录，IMG_4640",
+      "fit": "contain"
+    },
+    {
+      "order": 18,
+      "src": "assets/images/18.webp",
+      "day": "9.26",
+      "sourceName": "DSC01861.JPG",
+      "sourceSize": [
+        6000,
+        3376
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "3:12",
+      "figmaPosition": {
+        "x": -3408,
+        "y": 14848
+      },
+      "alt": "9.26 WDCC现场记录，DSC01861",
+      "fit": "contain"
+    },
+    {
+      "order": 19,
+      "src": "assets/images/19.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4721.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:22",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 17318
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4721",
+      "fit": "contain"
+    },
+    {
+      "order": 20,
+      "src": "assets/images/20.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4748.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:23",
+      "figmaPosition": {
+        "x": -3454,
+        "y": 17318
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4748",
+      "fit": "contain"
+    },
+    {
+      "order": 21,
+      "src": "assets/images/21.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4754.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:25",
+      "figmaPosition": {
+        "x": -7702,
+        "y": 19796
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4754",
+      "fit": "contain"
+    },
+    {
+      "order": 22,
+      "src": "assets/images/22.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4758.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:31",
+      "figmaPosition": {
+        "x": -3454,
+        "y": 19796
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4758",
+      "fit": "contain"
+    },
+    {
+      "order": 23,
+      "src": "assets/images/23.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4752.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:24",
+      "figmaPosition": {
+        "x": -7638,
+        "y": 22310
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4752",
+      "fit": "contain"
+    },
+    {
+      "order": 24,
+      "src": "assets/images/24.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4786.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:26",
+      "figmaPosition": {
+        "x": -3454,
+        "y": 22310
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4786",
+      "fit": "contain"
+    },
+    {
+      "order": 25,
+      "src": "assets/images/25.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4815.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:30",
+      "figmaPosition": {
+        "x": -7670,
+        "y": 25074
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4815",
+      "fit": "contain"
+    },
+    {
+      "order": 26,
+      "src": "assets/images/26.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4795.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:28",
+      "figmaPosition": {
+        "x": -3486,
+        "y": 25074
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4795",
+      "fit": "contain"
+    },
+    {
+      "order": 27,
+      "src": "assets/images/27.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4787.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:27",
+      "figmaPosition": {
+        "x": -7638,
+        "y": 27588
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4787",
+      "fit": "contain"
+    },
+    {
+      "order": 28,
+      "src": "assets/images/28.webp",
+      "day": "9.27",
+      "sourceName": "IMG_4798.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "5:29",
+      "figmaPosition": {
+        "x": -3454,
+        "y": 27544
+      },
+      "alt": "9.27 WDCC现场记录，IMG_4798",
+      "fit": "contain"
+    },
+    {
+      "order": 29,
+      "src": "assets/images/29.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4925.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:32",
+      "figmaPosition": {
+        "x": -7600,
+        "y": 30101
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4925",
+      "fit": "contain"
+    },
+    {
+      "order": 30,
+      "src": "assets/images/30.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4935.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:33",
+      "figmaPosition": {
+        "x": -3388,
+        "y": 30101
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4935",
+      "fit": "contain"
+    },
+    {
+      "order": 31,
+      "src": "assets/images/31.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4965.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:34",
+      "figmaPosition": {
+        "x": -7600,
+        "y": 32579
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4965",
+      "fit": "contain"
+    },
+    {
+      "order": 32,
+      "src": "assets/images/32.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4972.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:35",
+      "figmaPosition": {
+        "x": -3388,
+        "y": 32579
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4972",
+      "fit": "contain"
+    },
+    {
+      "order": 33,
+      "src": "assets/images/33.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4976.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:36",
+      "figmaPosition": {
+        "x": -7600,
+        "y": 35057
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4976",
+      "fit": "contain"
+    },
+    {
+      "order": 34,
+      "src": "assets/images/34.webp",
+      "day": "9.28",
+      "sourceName": "IMG_5002.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:37",
+      "figmaPosition": {
+        "x": -3388,
+        "y": 35021
+      },
+      "alt": "9.28 WDCC现场记录，IMG_5002",
+      "fit": "contain"
+    },
+    {
+      "order": 35,
+      "src": "assets/images/35.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4929.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:39",
+      "figmaPosition": {
+        "x": -7600,
+        "y": 37535
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4929",
+      "fit": "contain"
+    },
+    {
+      "order": 36,
+      "src": "assets/images/36.webp",
+      "day": "9.28",
+      "sourceName": "IMG_4996.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:38",
+      "figmaPosition": {
+        "x": -3388,
+        "y": 37535
+      },
+      "alt": "9.28 WDCC现场记录，IMG_4996",
+      "fit": "contain"
+    },
+    {
+      "order": 37,
+      "src": "assets/images/37.webp",
+      "day": "9.29",
+      "sourceName": "4333b8be5c5d8c3c04a9334198d09cb5.jpg",
+      "sourceSize": [
+        1990,
+        1329
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:40",
+      "figmaPosition": {
+        "x": -7649,
+        "y": 40013
+      },
+      "alt": "9.29 WDCC现场记录，4333b8be5c5d8c3c04a9334198d09cb5",
+      "fit": "contain"
+    },
+    {
+      "order": 38,
+      "src": "assets/images/38.webp",
+      "day": "9.29",
+      "sourceName": "IMG_5108.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "6:41",
+      "figmaPosition": {
+        "x": -3381,
+        "y": 39977
+      },
+      "alt": "9.29 WDCC现场记录，IMG_5108",
+      "fit": "contain"
+    },
+    {
+      "order": 39,
+      "src": "assets/images/39.webp",
+      "day": "9.30",
+      "sourceName": "IMG_5679.JPG",
+      "sourceSize": [
+        4032,
+        2268
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "7:43",
+      "figmaPosition": {
+        "x": -7617,
+        "y": 42491
+      },
+      "alt": "9.30 WDCC现场记录，IMG_5679",
+      "fit": "contain"
+    },
+    {
+      "order": 40,
+      "src": "assets/images/40.webp",
+      "day": "9.30",
+      "sourceName": "IMG_5783.JPG",
+      "sourceSize": [
+        5712,
+        3213
+      ],
+      "width": 1920,
+      "height": 1080,
+      "figmaNodeId": "7:42",
+      "figmaPosition": {
+        "x": -3373,
+        "y": 42378
+      },
+      "alt": "9.30 WDCC现场记录，IMG_5783",
+      "fit": "contain"
+    }
+  ]
+}

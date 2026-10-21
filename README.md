@@ -1,5 +1,7 @@
 # WDCC 2026 · 9.29 同济大学会议图文记录
 
+**[五天见闻预览 · 9.26—9.30 →](https://sodawater14.github.io/wdcc-2026-0929/five-days/)**
+
 **[在线体验 →](https://sodawater14.github.io/wdcc-2026-0929/)**
 
 Su Runxiang 整理的 WDCC 2026 年 9 月 29 日会议记录：15 份报告、390 张现场照片，结合录音修复转录、原始录音与个人总结，呈现可交互的桌面端图文档案。
