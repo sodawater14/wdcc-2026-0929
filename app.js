@@ -293,6 +293,9 @@ function buildGallery() {
     figure.style.transform=`translateX(${offset*stepWidth()}px)`;
     figure.style.opacity=offset===0?'1':'.25';
     figure.setAttribute('aria-hidden',String(offset!==0));
+    const pageNumber=document.createElement('figcaption');
+    pageNumber.className='slide-page';pageNumber.textContent=String(index+1);
+    pageNumber.setAttribute('aria-hidden','true');figure.append(pageNumber);
     if(Math.abs(offset)<=1) {
       const img=new Image();img.alt=`${current.title} — ${index+1} / ${current.images.length}`;
       img.width=image.width;img.height=image.height;img.draggable=false;
@@ -302,7 +305,9 @@ function buildGallery() {
       img.addEventListener('load',()=>figure.classList.remove('pending'));
       img.addEventListener('error',()=>{
         if(!fallback){fallback=true;setMediaImage(img,image.src,offset===0?'high':'low');return;}
-        figure.classList.remove('pending');figure.innerHTML='<span class="image-retry">图片加载失败，请按左右方向键切换后重试</span>';
+        figure.classList.remove('pending');img.remove();
+        const retry=document.createElement('span');retry.className='image-retry';
+        retry.textContent='图片加载失败，请按左右方向键切换后重试';figure.append(retry);
       });
       if(offset===0){
         img.addEventListener('load',()=>{
