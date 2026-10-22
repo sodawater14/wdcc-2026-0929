@@ -19,6 +19,7 @@
 .taste-highlight[data-effect="6"]::before{background:#ac4a25;transform:scaleX(var(--taste-fill))}
 .taste-highlight[data-effect="7"]::before{background:#437745;transform:scaleY(var(--taste-fill))}
 .taste-highlight[data-effect="9"]{color:#9900ff}
+.taste-view.taste-awaiting .taste-highlight{color:#171717!important;--taste-fill:0!important}
 .taste-visual{position:relative}
 .taste-char{display:inline-block;position:relative;white-space:pre}
 .taste-ghost{position:absolute;inset:0;opacity:0;pointer-events:none}

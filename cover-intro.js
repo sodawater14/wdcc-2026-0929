@@ -4,7 +4,7 @@
  * The mask cuts away the photograph AND matte to reveal the live report DOM.
  * License: vendor/Scroll-Transition-LICENSE.txt
  */
-import {loadScrollTrigger} from './taste.js?v=taste-2';
+import {loadScrollTrigger} from './taste.js?v=taste-3';
 const SESSION_KEY='wdcc-0929-cover-v1';
 const SVG_NS='http://www.w3.org/2000/svg';
 

@@ -1,4 +1,7 @@
 :root{--page:#e8e8e8;--detail:#f1f1f1;--blue:#5050ff;--red:#ff0000;--content:72vw;--tab-height:80px;font-family:Arial,"Microsoft YaHei","PingFang SC",sans-serif;color:var(--blue);background:var(--page);font-synthesis:none}
+/* Hide only the outer browser scrollbar; preserve native scrolling and reader controls. */
+html,body{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
 *{box-sizing:border-box}body{margin:0}button{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--blue);outline-offset:7px}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .masthead{display:flex;justify-content:space-between;align-items:flex-start;padding:38px 2vw 0;font-size:20px;line-height:1.55;letter-spacing:.01em}.identity{display:flex;align-items:flex-start;gap:18px}.identity-rule{width:63px;height:1px;background:var(--blue);margin-top:13px}
 .grid{width:85vw;margin:140px auto 130px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:4.4vw;row-gap:5vw;align-items:start}

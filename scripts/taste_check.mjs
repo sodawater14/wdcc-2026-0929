@@ -20,6 +20,10 @@ try{
   assert.equal(new URL(p.url()).hash,'#taste');assert.equal(await p.locator('.taste-section').count(),5);
   assert.equal(await p.locator('.taste-highlight').count(),6);
   await p.waitForFunction(()=>window.ScrollTrigger?.getAll().length===6);
+  assert.equal(await p.evaluate(()=>getComputedStyle(document.documentElement).scrollbarWidth),'none');
+  const initialWord=p.locator('[data-effect="3"] .taste-glyph').first();
+  assert.equal(await initialWord.evaluate(el=>getComputedStyle(el).color),'rgb(23, 23, 23)','Highlight must remain neutral on entry');
+  await p.waitForTimeout(180);assert.equal(await initialWord.evaluate(el=>getComputedStyle(el).color),'rgb(23, 23, 23)');
   assert.equal(await p.evaluate(()=>scrollY),0);await shot(p,`${width}-taste-question`);
   // Each effect runs, completes, resets out of view, and runs again on upward entry.
   for(let i=0;i<5;i++){

@@ -1,5 +1,5 @@
 import {ImageZoom} from './image-zoom.js?v=zoom-1';
-import {TasteView} from './taste.js?v=taste-2';
+import {TasteView} from './taste.js?v=taste-3';
 import {configureMedia,mediaURL,alternateMediaURL,setMediaImage,cancelMediaImage} from './media-loader.js?v=range-3';
 import {PersonalSummary} from './personal-summary.js';
 import {AudioRing} from './audio-ring.js?v=range-3';

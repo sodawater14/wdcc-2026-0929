@@ -27,7 +27,7 @@ class TasteHighlights{
     try{
       for(const mark of root.querySelectorAll('.taste-highlight')){
         const text=mark.textContent;
-        const entry={mark,text,timeline:null,trigger:null};this.entries.push(entry);
+        const entry={mark,text,timeline:null,trigger:null,pending:null};this.entries.push(entry);
         const spoken=document.createElement('span');spoken.className='sr-only';spoken.textContent=text;
         const visual=document.createElement('span');visual.className='taste-visual';visual.setAttribute('aria-hidden','true');
         const segments=segmenter?[...segmenter.segment(text)].map(s=>s.segment):Array.from(text);
@@ -42,17 +42,22 @@ class TasteHighlights{
         mark.replaceChildren(spoken,visual);
         entry.chars=[...mark.querySelectorAll('.taste-glyph')];entry.ghosts=[...mark.querySelectorAll('.taste-ghost')];
         this.reset(entry);
-        entry.trigger=ScrollTrigger.create({trigger:mark,start:'top 88%',end:'bottom 12%',
-          onEnter:()=>this.play(entry),onEnterBack:()=>this.play(entry),
+        entry.trigger=ScrollTrigger.create({trigger:mark,start:'top 72%',end:'bottom 12%',
+          onEnter:()=>this.queue(entry),onEnterBack:()=>this.queue(entry),
           onLeave:()=>this.reset(entry),onLeaveBack:()=>this.reset(entry)});
       }
       ScrollTrigger.refresh();
     }catch(error){this.destroy();throw error;}
   }
   reset(entry){
+    entry.pending?.kill();entry.pending=null;
     const {mark,chars,ghosts}=entry;entry.timeline?.kill();
     this.gsap.set([...chars,...ghosts],{clearProps:'all'});
     this.gsap.set(mark,{'--taste-fill':0,color:'#171717'});
+  }
+  queue(entry){
+    this.reset(entry);
+    entry.pending=this.gsap.delayedCall(.6,()=>{entry.pending=null;this.play(entry);});
   }
   play(entry){
     this.reset(entry);
@@ -85,7 +90,7 @@ class TasteHighlights{
   }
   destroy(){
     for(const entry of this.entries){
-      entry.trigger?.kill();entry.timeline?.kill();
+      entry.trigger?.kill();entry.timeline?.kill();entry.pending?.kill();
       entry.mark.replaceChildren(document.createTextNode(entry.text));entry.mark.removeAttribute('style');
     }
     this.entries=[];
@@ -119,13 +124,18 @@ export class TasteView{
   clearEffects(){this.effectsVersion++;this.effect?.destroy();this.effect=null;}
   async mountEffects(){
     this.clearEffects();
-    if(!this.showing||this.motion.matches||!window.gsap)return;
+    if(!this.showing||this.motion.matches||!window.gsap){this.root.classList.remove('taste-awaiting');return;}
+    this.root.classList.add('taste-awaiting');
     const version=this.effectsVersion;
     try{
       const plugin=await loadScrollTrigger();
       if(!this.showing||this.motion.matches||version!==this.effectsVersion)return;
       this.effect=new TasteHighlights(this.root,window.gsap,plugin);
-    }catch(error){console.warn('Taste highlights unavailable; complete static text remains visible.',error);}
+      this.root.classList.remove('taste-awaiting');
+    }catch(error){
+      if(version===this.effectsVersion)this.root.classList.remove('taste-awaiting');
+      console.warn('Taste highlights unavailable; complete static text remains visible.',error);
+    }
   }
   fade(element,enter,instant){
     if(instant||this.motion.matches||!window.gsap)return Promise.resolve();
@@ -149,6 +159,7 @@ export class TasteView{
       if(!wanted)this.clearEffects();
       await this.fade(source,false,instant);
       source.hidden=true;source.style.removeProperty('opacity');source.style.removeProperty('transform');source.inert=false;
+      this.root.classList.toggle('taste-awaiting',wanted&&!this.motion.matches&&Boolean(window.gsap));
       target.hidden=false;target.inert=true;this.showing=wanted;
       document.title=wanted?'品味 — WDCC 9.29':'WDCC 2026 / 9.29 TJU';
       document.body.classList.toggle('in-taste',wanted);
