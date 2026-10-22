@@ -5,7 +5,6 @@
  * License: vendor/Scroll-Transition-LICENSE.txt
  */
 import {loadScrollTrigger} from './taste.js?v=taste-3';
-const SESSION_KEY='wdcc-0929-cover-v1';
 const SVG_NS='http://www.w3.org/2000/svg';
 
 export class CoverIntro{
@@ -129,7 +128,6 @@ export class CoverIntro{
     window.removeEventListener('resize',this.onResize);
     window.removeEventListener('scroll',this.onReducedScroll);
     this.motion.removeEventListener('change',this.onMotion);
-    try{sessionStorage.setItem(SESSION_KEY,'done');}catch{}
     const reveal=()=>{
       const focused=this.root.contains(document.activeElement);
       this.root.remove();document.documentElement.classList.remove('cover-pending','cover-running');

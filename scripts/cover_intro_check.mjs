@@ -13,6 +13,8 @@ try{
  for(const width of [1920,1440]){
   const context=await browser.newContext({viewport:{width,height:width===1920?1080:900},reducedMotion:'no-preference'});
   const p=await context.newPage();p.on('pageerror',e=>errors.push(e.message));
+  // Previously completed sessions must no longer bypass the opening cover.
+  await p.addInitScript(()=>sessionStorage.setItem('wdcc-0929-cover-v1','done'));
   await p.goto(base,{waitUntil:'networkidle'});await ready(p);
   assert.equal(await p.locator('.cover-blinds rect').count(),60);
   assert.equal(await p.locator('#home').evaluate(el=>el.inert),true);
@@ -38,14 +40,14 @@ try{
   assert.equal(await p.evaluate(()=>scrollY),0);
   assert.equal(await p.evaluate(()=>ScrollTrigger.getAll().length),0);
   assert.equal(await p.evaluate(()=>getComputedStyle(document.querySelector('#home')).position),'static');
-  assert.equal(await p.evaluate(()=>sessionStorage.getItem('wdcc-0929-cover-v1')),'done');
   await shot(p,`${width}-cover-reports`);
   await p.evaluate(()=>scrollTo(0,0));assert.equal(await p.locator('#cover-intro').count(),0);
-  await p.reload({waitUntil:'networkidle'});assert.equal(await p.locator('#cover-intro').count(),0);
+  await p.reload({waitUntil:'networkidle'});await ready(p);
+  await p.locator('.cover-skip').evaluate(el=>el.click());await finished(p);
   await p.locator('#taste-enter').click();await p.waitForFunction(()=>!document.querySelector('#taste-view').hidden&&!document.body.classList.contains('taste-switching'));
   await p.locator('#taste-back').click();await p.waitForFunction(()=>!document.querySelector('#home').hidden&&!document.body.classList.contains('taste-switching'));
   assert.equal(await p.locator('#cover-intro').count(),0);
-  // A separate tab in the same browser context has a separate sessionStorage session.
+  // Every new page entry also starts with the cover.
   const fresh=await context.newPage();await fresh.goto(base,{waitUntil:'networkidle'});await ready(fresh);
   await fresh.keyboard.press('Tab');assert.equal(await fresh.locator('.cover-skip').evaluate(el=>el===document.activeElement),true);
   await fresh.keyboard.press('Enter');await finished(fresh);assert.equal(await fresh.locator('#cover-intro').count(),0);
@@ -75,5 +77,5 @@ try{
  await storage.addInitScript(()=>{Storage.prototype.getItem=()=>{throw new Error('blocked')};Storage.prototype.setItem=()=>{throw new Error('blocked')}});
  await storage.goto(base,{waitUntil:'networkidle'});await ready(storage);await storage.locator('.cover-skip').evaluate(el=>el.click());await finished(storage);
  assert.equal(await storage.locator('#cover-intro').count(),0);await storage.close();
- assert.deepEqual(errors,[]);console.log('PASS: 30 paired SVG blinds, 1920/1440 centered fullscreen photo without scroll caption, wheel/keyboard/reverse/resize, visual completion before teardown, clean home flow, per-tab session once, direct taste, reduced motion, keyboard skip, image/plugin/module failures and blocked storage.');
+ assert.deepEqual(errors,[]);console.log('PASS: 30 paired SVG blinds, 1920/1440 centered fullscreen photo, wheel/keyboard/reverse/resize, every reload and new entry replays cover even with legacy session flag, internal taste return does not replay, direct taste, reduced motion, keyboard skip, failure fallback and blocked storage.');
 }finally{await browser.close()}

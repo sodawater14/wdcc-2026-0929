@@ -78,6 +78,6 @@ GitHub Pages 从 `main` 分支根目录发布，推送更新后自动刷新线�
 
 ## 会议封面
 
-新标签页首次打开首页时，会议照片保持原比例铺满窗口，居中裁切以突出报告展陈，不显示滚动说明。滚动约 1.5 屏，以 30 组横向百叶 SVG 遮罩露出真实报告首页，完成前可向上滚动撤回。转场完成后移除封面及滚动占位，同一标签页会话内不重播；直接访问 `#taste` 跳过封面。键盘聚焦可使用“跳过封面”，减少动态效果时滚动触发短淡出。照片、依赖或初始化失败时开放首页，不阻塞报告阅读。
+每次打开或刷新 9.29 首页时，会议照片保持原比例铺满窗口，居中裁切以突出报告展陈，不显示滚动说明。滚动约 1.5 屏，以 30 组横向百叶 SVG 遮罩露出真实报告首页，完成前可向上滚动撤回。转场完成后移除封面及滚动占位，从报告详情或品味页返回时不重播，重新打开或刷新首页则重新显示；直接访问 `#taste` 跳过封面。键盘聚焦可使用“跳过封面”，减少动态效果时滚动触发短淡出。照片、依赖或初始化失败时开放首页，不阻塞报告阅读。
 
-`assets/intro/meeting-original.jpg` 保留原始照片，`meeting.webp` 为网页副本。效果改编自 https://github.com/Hiro-kiii/Scroll-Transition/ ，保留其矩形构造、错峰顺序与缓动，未引入 Lenis；MIT 许可见 `vendor/Scroll-Transition-LICENSE.txt`。`node scripts/cover_intro_check.mjs` 检查滚动进退、缩放、一次性播放、异常降级、键盘及两种桌面尺寸。
+`assets/intro/meeting-original.jpg` 保留原始照片，`meeting.webp` 为网页副本。效果改编自 https://github.com/Hiro-kiii/Scroll-Transition/ ，保留其矩形构造、错峰顺序与缓动，未引入 Lenis；MIT 许可见 `vendor/Scroll-Transition-LICENSE.txt`。`node scripts/cover_intro_check.mjs` 检查滚动进退、缩放、重新进入与刷新重播、异常降级、键盘及两种桌面尺寸。

@@ -12,8 +12,8 @@ try{
  for(const width of [1920,1440]){
   const p=await browser.newPage({viewport:{width,height:width===1920?1080:900},reducedMotion:'no-preference'});
   p.on('pageerror',e=>errors.push(e.message));
-  await p.addInitScript(()=>sessionStorage.setItem('wdcc-0929-cover-v1','done'));
   await p.goto(base,{waitUntil:'networkidle'});await p.locator('.card').last().waitFor();
+  await p.locator('.cover-skip').evaluate(el=>el.click());await p.waitForFunction(()=>!document.documentElement.classList.contains('cover-pending'));
   await p.locator('#taste-enter').scrollIntoViewIfNeeded();const homeY=await p.evaluate(()=>scrollY);
   assert.equal(await p.locator('#taste-view').isVisible(),false);await shot(p,`${width}-taste-entry`);
   await p.locator('#taste-enter').click();await settled(p);assert.equal(await p.locator('#home').isVisible(),false);
