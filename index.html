@@ -6,12 +6,39 @@
   <meta name="theme-color" content="#e8e8e8">
   <meta name="description" content="Su Runxiang — WDCC 2026，同济大学 9.29 的十五场报告记录。">
   <title>WDCC 2026 / 9.29 TJU</title>
-  <link rel="stylesheet" href="styles.css?v=pages-1">
+  <script>
+    (()=>{
+      let seen=false;try{seen=sessionStorage.getItem('wdcc-0929-cover-v1')==='done';}catch{}
+      if(location.hash==='#taste'||seen)return;
+      document.documentElement.classList.add('cover-pending');
+      // If the optional intro module fails, the reports must remain accessible.
+      window.__wdccCoverFailsafe=setTimeout(()=>{
+        document.documentElement.classList.remove('cover-pending','cover-running');
+        const home=document.getElementById('home');if(home){home.inert=false;home.removeAttribute('aria-hidden');}
+        document.getElementById('cover-intro')?.remove();window.scrollTo(0,0);
+        window.dispatchEvent(new Event('wdcc:cover-failed'));
+      },12000);
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=taste-1">
+  <link rel="stylesheet" href="taste.css?v=taste-2">
+  <link rel="stylesheet" href="cover-intro.css?v=cover-2">
   <script defer src="vendor/gsap.min.js"></script>
   <script defer src="vendor/Flip.min.js"></script>
-  <script type="module" src="app.js?v=pages-1"></script>
+  <script type="module" src="app.js?v=cover-2"></script>
+  <script type="module" src="cover-intro.js?v=cover-2"></script>
 </head>
 <body>
+  <section id="cover-intro" class="cover-intro" aria-label="9月29日智能交互与协同设计论坛封面">
+    <div class="cover-viewport" tabindex="-1">
+      <svg class="cover-svg" role="img" aria-labelledby="cover-photo-title" viewBox="0 0 1920 1080">
+        <title id="cover-photo-title">智能交互与协同设计论坛，2026年9月29日，同济大学会议现场海报</title>
+        <defs><mask id="cover-blinds-mask" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080" style="mask-type:luminance"><rect class="cover-mask-base" width="1920" height="1080" fill="white"/><g class="cover-blinds"></g></mask></defs>
+        <g mask="url(#cover-blinds-mask)"><rect class="cover-matte" width="1920" height="1080" fill="#e8e8e8"/><image class="cover-photo" href="assets/intro/meeting.webp" x="0" y="0" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></g>
+      </svg>
+      <button type="button" class="cover-skip">跳过封面</button>
+    </div>
+  </section>
   <main id="home">
     <header class="masthead">
       <div class="identity"><span>Su Runxiang</span><span class="identity-rule"></span><span>WDCC 2026<br>9.29 TJU</span></div>
@@ -19,12 +46,47 @@
     </header>
     <div id="grid" class="grid" aria-label="十五场报告"></div>
     <footer class="home-footer">
-      <a class="micromobility-link" href="https://sodawater14.github.io/wdcc-micromobility/" target="_blank" rel="noopener noreferrer" aria-label="微出行在线体验（在新标签页打开）">
-        <span>微出行</span>
+      <a id="taste-enter" class="micromobility-link" href="#taste" aria-label="进入品味滚动阅读页面">
+        <span>品味</span>
         <svg viewBox="0 0 72 14" aria-hidden="true"><path d="M1 7h68m-6-5 6 5-6 5"/></svg>
       </a>
     </footer>
   </main>
+  <article id="taste-view" class="taste-view" aria-label="品味" hidden>
+    <header class="taste-header"><a id="taste-back" href="#" class="taste-back">返回报告</a><h1 class="sr-only">品味</h1></header>
+    <section class="taste-section taste-question" aria-label="审美与品味的培养">
+      <div class="taste-copy">
+        <p>Q：技术都上来了，但是审美其实还是跟原来一样百里挑一……今天这个时代，我们该怎么培养学生的品味跟审美？</p>
+        <p>A：一是环境与长期积累。审美的训练，不是在一门课的训练，可能要贯穿一生。审美它不能像一个开关一样，开一下它就上去了，它需要时间。要能学到会去欣赏一样东西。可能是一杯咖啡，也可能是茶叶、一首乐曲、一幅画。要从改变我们自身周围的生活环境开始。二是多样性与可培养性，审美很多人是从自己原来生长的地方带来的。这是一个动态的过程，不管是我们的 <mark class="taste-highlight" data-effect="3">taste</mark> 也好，还是我们用 AI 工具也好……怎么样去把它用到最好……让它产生最大的社会价值。</p>
+      </div>
+    </section>
+    <section class="taste-section" aria-label="王昀谈价值判断力">
+      <div class="taste-copy">
+        <p>我觉得品味可能在 AI 这样的时代，<mark class="taste-highlight" data-effect="5">品味</mark>的事情会变得越来越重要。品味在我们这里，把它理解为价值的判断力</p>
+        <p class="taste-attribution">——王昀·《柔性壁垒：AI 时代设计的战略判断、系统与关系》</p>
+      </div>
+    </section>
+    <section class="taste-section" aria-label="王萌谈新的品位与自主性">
+      <div class="taste-copy">
+        <p>我正好可以趁这个人工智能在各个……门槛降低的情况下，学习新的技能、价值判断和<mark class="taste-highlight" data-effect="6">品位</mark>和自主性……</p>
+        <p class="taste-attribution">——王萌·《大设计大模型与智能体创新应用》</p>
+      </div>
+    </section>
+    <section class="taste-section" aria-label="曹鸣谈微出行与品味">
+      <div class="taste-copy">
+        <p>思考工业化、电子化时代背景下，材料的自然属性赋予产品的感官体验及人文价值。单车就不只是一个出行工具，也是一种生活态度，更可以是一种<mark class="taste-highlight" data-effect="7">品味</mark>的艺术。</p>
+        <p class="taste-attribution">——曹鸣·《从工具进化到生态重构：微出行创新的多维视域》</p>
+      </div>
+    </section>
+    <section class="taste-section" aria-label="AI时代的学生品味">
+      <div class="taste-copy">
+        <p>在 AI 和科技时代，<mark class="taste-highlight" data-effect="9">品味</mark>是学生判断“什么值得做、什么是好的、为什么选择它”的能力。它包含审美，也涉及价值判断、文化理解，以及对真实生活的感受。当 AI 降低表达、制作和生成方案的门槛，学生之间的差异，会越来越体现为<mark class="taste-highlight" data-effect="9">能否提出有意义的问题、识别优劣、形成自己的立场，并对选择负责</mark>。技术让想法更容易实现，品味则帮助学生确定实现的方向。</p>
+      </div>
+    </section>
+    <footer class="home-footer taste-footer">
+      <a class="micromobility-link" href="https://sodawater14.github.io/wdcc-micromobility/" target="_blank" rel="noopener noreferrer" aria-label="微出行在线体验（在新标签页打开）"><span>微出行</span><svg viewBox="0 0 72 14" aria-hidden="true"><path d="M1 7h68m-6-5 6 5-6 5"/></svg></a>
+    </footer>
+  </article>
   <article id="detail" class="detail" aria-label="报告详情" hidden>
     <div class="detail-top"><button id="back" class="text-button">Back</button></div>
     <section id="gallery" class="gallery" aria-label="报告图片，滚轮、拖动或左右方向键切换" tabindex="0">

@@ -6,6 +6,7 @@ const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Micr
 try{
  const p=await browser.newPage({viewport:{width:1920,height:1080},reducedMotion:'reduce'}),errors=[];
  p.on('pageerror',e=>errors.push(e.message));
+ await p.addInitScript(()=>sessionStorage.setItem('wdcc-0929-cover-v1','done'));
  await p.goto(process.env.PREVIEW_URL||'http://127.0.0.1:4187/',{waitUntil:'networkidle'});
  const counts=[20,30,30,21,29,30,15,27,23,25,23,26,21,32,38];
  const label=p.locator('.slide[data-offset="0"] .slide-page');
@@ -20,19 +21,14 @@ try{
   await p.keyboard.press('ArrowRight');await check(2);
   const slots=await p.locator('.slide').evaluateAll(els=>els.map(el=>({index:+el.dataset.index,page:+el.querySelector('.slide-page').textContent})));
   assert(slots.every(s=>s.page===s.index+1));
-  assert.equal(await p.locator('.micromobility-link').isVisible(),false);
+  assert.equal(await p.locator('#taste-enter').isVisible(),false);
   await p.keyboard.press('Escape');await p.waitForFunction(()=>document.querySelector('#detail').hidden&&!document.body.classList.contains('animating'));
  }
  assert.equal(total,390);
- const link=p.locator('.micromobility-link');assert.equal(await link.getAttribute('target'),'_blank');
- await p.context().route('https://sodawater14.github.io/wdcc-micromobility/**',route=>route.fulfill({body:'Navigation target checked',contentType:'text/html'}));
+ const link=p.locator('#taste-enter');assert.equal(await link.getAttribute('href'),'#taste');
  for(const width of [1920,1440]){
   await p.setViewportSize({width,height:width===1920?1080:900});await link.scrollIntoViewIfNeeded();
-  await p.screenshot({path:`qa/${width}-home-micromobility.png`});
-  const before=await p.evaluate(()=>scrollY);
-  const popupPromise=p.waitForEvent('popup');await link.click();const popup=await popupPromise;await popup.waitForLoadState();
-  assert.equal(popup.url(),'https://sodawater14.github.io/wdcc-micromobility/');await popup.close();
-  assert.equal(await p.evaluate(()=>scrollY),before);
+  await p.screenshot({path:`qa/${width}-home-taste-entry.png`});
   await p.locator('.card[data-id="1"]').click();await check(1);
   await p.waitForFunction(()=>document.querySelector('.slide[data-offset="0"] img')?.naturalWidth>0);
   await p.waitForFunction(()=>Number(getComputedStyle(document.querySelector('#detail')).opacity)>.99);
@@ -43,5 +39,5 @@ try{
   await p.screenshot({path:`qa/${width}-gallery-page-number.png`});
   await p.keyboard.press('Escape');await p.waitForFunction(()=>document.querySelector('#detail').hidden&&!document.body.classList.contains('animating'));
  }
- assert.deepEqual(errors,[]);console.log('PASS: 15 reports / 390 image records; first, last and wraparound page numbers; 1920/1440 spacing; footer new-tab link and retained position; no page errors.');
+ assert.deepEqual(errors,[]);console.log('PASS: 15 reports / 390 image records; first, last and wraparound page numbers; 1920/1440 spacing; footer taste entry; no page errors.');
 }finally{await browser.close()}

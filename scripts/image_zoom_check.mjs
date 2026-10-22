@@ -6,7 +6,7 @@ const browser=await chromium.launch({executablePath:'C:/Program Files (x86)/Micr
 try{
  const p=await browser.newPage({viewport:{width:1920,height:1080},reducedMotion:'reduce'}),errors=[];
  p.on('pageerror',e=>errors.push(e.message));
- await p.addInitScript(()=>{const N=Audio;window.Audio=class extends N{constructor(...a){super(...a);window.testAudio=this}}});
+ await p.addInitScript(()=>{sessionStorage.setItem('wdcc-0929-cover-v1','done');const N=Audio;window.Audio=class extends N{constructor(...a){super(...a);window.testAudio=this}}});
  const base=process.env.PREVIEW_URL||'http://127.0.0.1:4187/';await p.goto(base,{waitUntil:'networkidle'});
  await p.locator('.card').first().click();await p.waitForFunction(()=>!document.querySelector('#detail').hidden);
  const img=p.locator('.slide[data-offset="0"] img'),gallery=p.locator('#gallery'),zoom=p.locator('.image-zoom');

@@ -1,6 +1,6 @@
 # WDCC 2026 · 9.29 同济大学会议图文记录
 
-**[五天见闻预览 · 9.26—9.30 →](https://sodawater14.github.io/wdcc-2026-0929/five-days/)**
+**[总览 →](https://sodawater14.github.io/wdcc-2026-0929/five-days/)**
 
 **[在线体验 →](https://sodawater14.github.io/wdcc-2026-0929/)**
 
@@ -67,3 +67,15 @@ GitHub Pages 从 `main` 分支根目录发布，推送更新后自动刷新线�
 ## 图片放大
 
 点击详情中央照片可放大到窗口内，再次点击图片或右上角“还原”返回；Esc 也可还原。放大期间录音继续播放，不重置时间。原有拖动、滚轮及方向键切图保持原行为；聚焦图片区后 Enter 或空格也可放大。`node scripts/image_zoom_check.mjs` 检查图片开关、原有切图及持续播放。
+
+## 品味滚动阅读
+
+首页底部“品味”箭头进入独立的 `#taste` 视图；滚到底不会自动进入。五段中文文案依次对应 Codrops OnScrollTextHighlight 的效果 3、5、6、7、9，使用本地 GSAP/ScrollTrigger，不接管原生滚动。浅灰底、黑色正文，关键词随进入视口高亮；减少动态效果或动效脚本不可用时保留完整静态文字。
+
+顶部“返回报告”和浏览器后退恢复首页位置，直接打开或刷新 `#taste` 也可阅读。底部“微出行”在新标签页打开曹鸣报告网站。`node scripts/taste_check.mjs` 检查导航、重复进入、动效与清理、长中文换行、失败降级及两种桌面尺寸。参考项目 MIT 许可见 `vendor/OnScrollTextHighlight-LICENSE.txt`。问答中的 taste 为亮红色，最后一段重点文字为亮紫色。
+
+## 会议封面
+
+新标签页首次打开首页时，会议照片保持原比例铺满窗口，居中裁切以突出报告展陈，不显示滚动说明。滚动约 1.5 屏，以 30 组横向百叶 SVG 遮罩露出真实报告首页，完成前可向上滚动撤回。转场完成后移除封面及滚动占位，同一标签页会话内不重播；直接访问 `#taste` 跳过封面。键盘聚焦可使用“跳过封面”，减少动态效果时滚动触发短淡出。照片、依赖或初始化失败时开放首页，不阻塞报告阅读。
+
+`assets/intro/meeting-original.jpg` 保留原始照片，`meeting.webp` 为网页副本。效果改编自 https://github.com/Hiro-kiii/Scroll-Transition/ ，保留其矩形构造、错峰顺序与缓动，未引入 Lenis；MIT 许可见 `vendor/Scroll-Transition-LICENSE.txt`。`node scripts/cover_intro_check.mjs` 检查滚动进退、缩放、一次性播放、异常降级、键盘及两种桌面尺寸。

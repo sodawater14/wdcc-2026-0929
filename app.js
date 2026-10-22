@@ -1,4 +1,5 @@
 import {ImageZoom} from './image-zoom.js?v=zoom-1';
+import {TasteView} from './taste.js?v=taste-2';
 import {configureMedia,mediaURL,alternateMediaURL,setMediaImage,cancelMediaImage} from './media-loader.js?v=range-3';
 import {PersonalSummary} from './personal-summary.js';
 import {AudioRing} from './audio-ring.js?v=range-3';
@@ -493,7 +494,10 @@ try {
   configureMedia(mediaConfig);
   if(!response.ok)throw new Error('Content not generated');
   reports=await response.json();renderHome();
+  window.dispatchEvent(new Event('wdcc:home-ready'));
+  new TasteView(home,$('#taste-view'),()=>!current&&!busy&&!home.hidden);
 } catch(error) {
+  window.dispatchEvent(new Event('wdcc:home-failed'));
   $('#error').hidden=false;
   $('#error').textContent='内容加载失败。请通过本地服务器打开本页，并确认已生成 data/reports.json。';
   console.error(error);

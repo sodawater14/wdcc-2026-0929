@@ -1,0 +1,12 @@
+/* Scoped opening stage. No wheel handlers or changes to the report gallery. */
+.cover-intro{display:none}
+html.cover-pending body{overflow:hidden}
+html.cover-pending.cover-running body{overflow:visible}
+.cover-pending #home{position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;pointer-events:none}
+.cover-pending .cover-intro{display:block;height:100dvh;position:relative}
+.cover-running .cover-intro{height:250dvh}
+.cover-viewport{position:fixed;inset:0;z-index:30;overflow:hidden;outline:none}
+.cover-svg{width:100%;height:100%;display:block;pointer-events:none}
+.cover-skip{position:absolute;top:20px;left:24px;border:1px solid #111;background:#e8e8e8;color:#111;padding:10px 16px;font-size:16px;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+.cover-skip:focus-visible{clip-path:none;width:auto;height:auto;overflow:visible;outline:2px solid var(--blue);outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.cover-running .cover-intro{height:120dvh}}

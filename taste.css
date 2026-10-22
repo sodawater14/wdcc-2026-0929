@@ -1,0 +1,28 @@
+/* Isolated editorial view. The five highlight colors follow the supplied references. */
+.taste-view{color:#171717;background:var(--page);min-height:100dvh;overflow:clip;overflow-clip-margin:40px}
+.taste-header{height:80px;padding:30px 2.4vw 0}
+.taste-back{font-size:16px;color:#171717;text-decoration:none;display:inline-block}
+.taste-back:hover{text-decoration:underline;text-underline-offset:5px}
+.taste-back:focus-visible{outline:1px solid var(--blue);outline-offset:7px}
+.taste-section{min-height:100dvh;display:flex;align-items:center;padding:110px max(7.5vw,24px)}
+.taste-question{min-height:calc(100dvh - 80px);padding-top:60px;padding-bottom:120px}
+.taste-copy{width:100%;max-width:1080px;margin:0 auto;font-size:clamp(28px,1.875vw,36px);font-weight:400;line-height:1.8;letter-spacing:.015em;overflow-wrap:break-word;line-break:strict}
+.taste-copy p{margin:0}
+.taste-copy p+p{margin-top:1.6em}
+.taste-copy .taste-attribution{font-size:clamp(18px,1.15vw,22px);line-height:1.8;text-align:right;margin-top:2.5em}
+.taste-footer{padding-top:24px;padding-bottom:32px}
+.taste-highlight{color:#923e73;background:none;font:inherit}
+.taste-highlight[data-effect="3"]{color:#ff0000}
+.taste-highlight[data-effect="5"],.taste-highlight[data-effect="6"],.taste-highlight[data-effect="7"]{position:relative;isolation:isolate;display:inline-block;white-space:nowrap;--taste-fill:1;color:#fff}
+.taste-highlight[data-effect="5"]::before,.taste-highlight[data-effect="6"]::before,.taste-highlight[data-effect="7"]::before{content:"";position:absolute;z-index:-1;inset:.15em -.08em .05em;border-radius:5px;pointer-events:none;transform-origin:0 100%}
+.taste-highlight[data-effect="5"]::before{background:#6a5ace;transform:scale(var(--taste-fill))}
+.taste-highlight[data-effect="6"]::before{background:#ac4a25;transform:scaleX(var(--taste-fill))}
+.taste-highlight[data-effect="7"]::before{background:#437745;transform:scaleY(var(--taste-fill))}
+.taste-highlight[data-effect="9"]{color:#9900ff}
+.taste-visual{position:relative}
+.taste-char{display:inline-block;position:relative;white-space:pre}
+.taste-ghost{position:absolute;inset:0;opacity:0;pointer-events:none}
+body.taste-switching{overflow:hidden}
+body.taste-switching #home,body.taste-switching #taste-view{pointer-events:none}
+@media(max-width:1100px){.taste-section{padding-left:8vw;padding-right:8vw}.taste-copy{font-size:26px}.taste-question{padding-top:48px}}
+@media(prefers-reduced-motion:reduce){.taste-highlight[data-effect="3"]{text-shadow:none}}
