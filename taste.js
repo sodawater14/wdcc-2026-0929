@@ -42,7 +42,9 @@ class TasteHighlights{
         mark.replaceChildren(spoken,visual);
         entry.chars=[...mark.querySelectorAll('.taste-glyph')];entry.ghosts=[...mark.querySelectorAll('.taste-ghost')];
         this.reset(entry);
-        entry.trigger=ScrollTrigger.create({trigger:mark,start:'top 72%',end:'bottom 12%',
+        // Visibility, rather than a percentage reading line: a visible word near
+        // the bottom of a short/zoomed viewport must still reveal without scrolling.
+        entry.trigger=ScrollTrigger.create({trigger:mark,start:'top bottom-=24',end:'bottom top+=24',
           onEnter:()=>this.queue(entry),onEnterBack:()=>this.queue(entry),
           onLeave:()=>this.reset(entry),onLeaveBack:()=>this.reset(entry)});
       }
